@@ -11,28 +11,30 @@ import Spinner from "../../components/Spinner";
 import api from "../../Utilites/Api";
 import { isLiked } from "../../Utilites/product";
 
-const ProductPage = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+const ProductPage = ({currentUser, isLoading}) => {
+  // const [searchQuery, setSearchQuery] = useState("");
+
+  // const [currentUser, setCurrentUser] = useState(null);
+  // const [isLoading, setIsLoading] = useState(false);
+
   const [product, setProduct] = useState(null);
 
-  const handleRequest = useCallback((searchQuery) => {
-    // const query = defaultSearchQuery || searchQuery;
-    // const filterCards = cards.filter(
-    //   item => (item.name).toLowerCase().includes(searchQuery.toLowerCase())
-    // );
-    // setCards(filterCards);
-    // console.log(searchQuery.length);
-    setIsLoading(true);
-    api
-      .search(searchQuery)
-      .then((searchResult) => {
-        // console.log(searchResult);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false))
-  }, []);
+  // const handleRequest = useCallback((searchQuery) => {
+  //   // const query = defaultSearchQuery || searchQuery;
+  //   // const filterCards = cards.filter(
+  //   //   item => (item.name).toLowerCase().includes(searchQuery.toLowerCase())
+  //   // );
+  //   // setCards(filterCards);
+  //   // console.log(searchQuery.length);
+  //   setIsLoading(true);
+  //   api
+  //     .search(searchQuery)
+  //     .then((searchResult) => {
+  //       // console.log(searchResult);
+  //     })
+  //     .catch((err) => console.log(err))
+  //     .finally(() => setIsLoading(false))
+  // }, []);
 
   // const handleFormSubmit = (val) => {
   //   setSearchQuery(val)
@@ -56,30 +58,22 @@ const ProductPage = () => {
   }, [product, currentUser])
 
   useEffect(() => {
-    setIsLoading(true);
+    // setIsLoading(true);
     Promise.all([api.getProductById("622c77e877d63f6e70967d22"), api.getUserInfo()])
       .then(([productsData, userData]) => {
-        setCurrentUser(userData);
+        // setCurrentUser(userData);
         setProduct(productsData);
         // console.log(productsData.products);
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      // .finally(() => setIsLoading(false));
   }, []);
 
   return (
     <>
-      <Header>
-        <Logo className="logo logo_place_holder" />
-        <Search onSubmit={handleRequest} />
-      </Header>
-      <main className="content container">
-        <Sort />
         <div className="content__cards">
           {isLoading ? <Spinner /> : <Product  {...product} currentUser={currentUser} onProductLike={handleProductLike} />}
         </div>
-      </main>
-      <Footer />
     </>
   );
 };

@@ -12,6 +12,9 @@ import api from '../../Utilites/Api';
 import useDebounce from '../../hooks/useDebounce';
 import { isLiked } from '../../Utilites/product';
 import Spinner from '../Spinner';
+import { CatalogPage } from '../../pages/CatalogPage/catalog-page';
+import ProductPage from '../../pages/ProductPage/product-page';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -19,6 +22,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const debounceSearchQuery = useDebounce(searchQuery, 500);
+  const navigate = useNavigate();
 
   const handleRequest = () => {
     // const filterCards = cards.filter(
@@ -26,17 +30,18 @@ function App() {
     // );
     // setCards(filterCards);
     // console.log(searchQuery.length);
-  
+
     api.search(debounceSearchQuery)
       .then((searchResult) => {
         setCards(searchResult)
       })
-      .catch( err => console.log(err))}
+      .catch(err => console.log(err))
+  }
 
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    handleRequest();
+  const handleFormSubmit = (inputText) => {
+    navigate('/');
+    setSearchQuery(inputText)
+    handleRequest(inputText);
   }
 
   const handleInputChange = (inputValue) => {
@@ -45,9 +50,9 @@ function App() {
 
   function handleUpdateUser(userUpdateData) {
     api.setUserInfo(userUpdateData)
-    .then((newUserData) => {
-      setCurrentUser(newUserData)
-    })
+      .then((newUserData) => {
+        setCurrentUser(newUserData)
+      })
   }
 
   useEffect(() => {
@@ -61,8 +66,8 @@ function App() {
 
         // устанавливаем состояние карточек
         setCards(productsData.products)
-        
-      }).catch( err => console.log(err))
+
+      }).catch(err => console.log(err))
       .finally(() => setIsLoading(false))
     // тут то же самое, но в другом варианте
     //   api.getProductList()
@@ -77,50 +82,59 @@ function App() {
     //       // устанавливаем состяоние пользовтателя
     //       setCurrentUser(userData)
     //     })
-    }, [])
+  }, [])
 
-    useEffect(() => {
-      handleRequest();
-    }, [debounceSearchQuery])
+  useEffect(() => {
+    handleRequest();
+  }, [debounceSearchQuery])
 
-    function handleProductLike(product) {
-      const liked = isLiked(product.likes, currentUser._id);
-      // Метод some() проверяет, удовлетворяет ли какой-либо элемент массива условию, заданному в передаваемой функции. 
-      // Возвращаемое значение
-      // true, если функция проверки возвращает truthy значение хотя бы для одного элемента массива. Иначе, false.
-      // const isLiked = product.likes.some(id => id === currentUser._id)
-      api.changeLikeProduct(product._id, liked)
-        .then((newCard) => {
-          const newProducts = cards.map(cardState => {
-            // console.log('Карточка из стейта', cardState);
-            // console.log('Карточка с сервера', newCard);
-            return cardState._id === newCard._id ? newCard : cardState
-          })
-          setCards(newProducts)
+  function handleProductLike(product) {
+    const liked = isLiked(product.likes, currentUser._id);
+    // Метод some() проверяет, удовлетворяет ли какой-либо элемент массива условию, заданному в передаваемой функции. 
+    // Возвращаемое значение
+    // true, если функция проверки возвращает truthy значение хотя бы для одного элемента массива. Иначе, false.
+    // const isLiked = product.likes.some(id => id === currentUser._id)
+    api.changeLikeProduct(product._id, liked)
+      .then((newCard) => {
+        const newProducts = cards.map(cardState => {
+          // console.log('Карточка из стейта', cardState);
+          // console.log('Карточка с сервера', newCard);
+          return cardState._id === newCard._id ? newCard : cardState
         })
-    }
-
-    return (
-      <>
-        {/* <Header user={currentUser} onUdateUser={handleUpdateUser}> */}
-        <Header>
-            <Logo className="logo logo_place_holder" />
-            <Search onSubmit={handleFormSubmit} onInput={handleInputChange} />
-        </ Header>
-        <main className="content container">
-          <SeachInfo searchCount={cards.length} searchText={searchQuery} />
-          <Sort />
-          <div className="content__cards">
-            { 
-            isLoading 
-            ? <Spinner />
-            : <CardList goods={cards} onProductLike={handleProductLike} currentUser={currentUser} />
-            }
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
+        setCards(newProducts)
+      })
   }
+
+  return (
+    <>
+      {/* <Header user={currentUser} onUdateUser={handleUpdateUser}> */}
+      <Header>
+        <Logo className="logo logo_place_holder" />
+        <Search onSubmit={handleFormSubmit} onInput={handleInputChange} />
+      </ Header>
+      <main className="content container">
+        <SeachInfo searchCount={cards.length} searchText={searchQuery} />
+        <Routes>
+          <Route index element={
+            <CatalogPage
+              isLoading={isLoading}
+              cards={cards}
+              handleProductLike={handleProductLike}
+              currentUser={currentUser}
+            />
+          } />
+          <Route path='/product' element={
+            <ProductPage
+              currentUser={currentUser}
+              isLoading={isLoading}
+            />
+          } />
+        </Routes>
+
+      </main>
+      <Footer />
+    </>
+  );
+}
 
 export default App;

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import App from './components/App/App';
 import './index.css';
 import ProductPage from './pages/ProductPage/product-page';
@@ -9,7 +10,9 @@ import ProductPage from './pages/ProductPage/product-page';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </>
 );
 

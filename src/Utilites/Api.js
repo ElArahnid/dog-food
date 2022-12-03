@@ -43,13 +43,13 @@ class Api {
     }).then(onResponce)
   }
 
-  setUserInfo(dataUser) {
-    return fetch(`${this._baseUrl}/v2/group-7/users/me`, {
-      method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify(dataUser)
-    }).then(onResponce)
-  }
+  // setUserInfo(dataUser) {
+  //   return fetch(`${this._baseUrl}/v2/group-7/users/me`, {
+  //     method: 'PATCH',
+  //     headers: this._headers,
+  //     body: JSON.stringify(dataUser)
+  //   }).then(onResponce)
+  // }
 
   search(searchQuery) {
     return fetch(`${this._baseUrl}/products/search?query=${searchQuery}`, {
@@ -64,12 +64,12 @@ class Api {
     }).then(onResponce)
   }
 
-  changeLikeProduct(productId, isLike) {
-    return fetch(`${this._baseUrl}/products/likes/${productId}`, {
-      method: isLike ? "DELETE" : "PUT",
-      headers: this._headers
-    }).then(onResponce)
-  }
+  // changeLikeProduct(productId, isLike) {
+  //   return fetch(`${this._baseUrl}/products/likes/${productId}`, {
+  //     method: isLike ? "DELETE" : "PUT",
+  //     headers: this._headers
+  //   }).then(onResponce)
+  // }
 
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Header from '../Header/Header';
 import Sort from '../Sort/Sort';
 import CardList from '../CardList/CardList';
@@ -15,33 +15,40 @@ import Spinner from '../Spinner';
 import { CatalogPage } from '../../pages/CatalogPage/catalog-page';
 import ProductPage from '../../pages/ProductPage/product-page';
 import { Route, Routes, useNavigate } from 'react-router-dom';
+import { NotFound, NotFoundPage } from '../../pages/NotFoundPage/not-found';
+import { UserContext } from '../../context/userContext';
+import { CardContext } from '../../context/cardContext';
+import { ThemeContext, themes } from '../../context/themeContext';
 
 function App() {
   const [cards, setCards] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [theme, setTheme] = useState(themes.light);
   const debounceSearchQuery = useDebounce(searchQuery, 500);
   const navigate = useNavigate();
 
-  const handleRequest = () => {
+  const handleRequest = useCallback(() => {
     // const filterCards = cards.filter(
     //   item => (item.name).toLowerCase().includes(searchQuery.toLowerCase())
     // );
     // setCards(filterCards);
     // console.log(searchQuery.length);
-
+    setIsLoading(true)
     api.search(debounceSearchQuery)
       .then((searchResult) => {
         setCards(searchResult)
       })
       .catch(err => console.log(err))
-  }
+      .finally(() => { setIsLoading(false) })
+  }, [searchQuery])
 
   const handleFormSubmit = (inputText) => {
+    setIsLoading(true)
     navigate('/');
-    setSearchQuery(inputText)
-    handleRequest(inputText);
+    setSearchQuery(+inputText)
+    handleRequest();
   }
 
   const handleInputChange = (inputValue) => {
@@ -86,54 +93,63 @@ function App() {
 
   useEffect(() => {
     handleRequest();
-  }, [debounceSearchQuery])
+  }, [debounceSearchQuery, handleRequest])
 
-  function handleProductLike(product) {
+  const handleProductLike = useCallback(async (product) => {
     const liked = isLiked(product.likes, currentUser._id);
     // Метод some() проверяет, удовлетворяет ли какой-либо элемент массива условию, заданному в передаваемой функции. 
     // Возвращаемое значение
-    // true, если функция проверки возвращает truthy значение хотя бы для одного элемента массива. Иначе, false.
+    // true, если функция проверки возвращает truthy значение !хотя бы для одного! элемента массива. Иначе, false.
     // const isLiked = product.likes.some(id => id === currentUser._id)
-    api.changeLikeProduct(product._id, liked)
-      .then((newCard) => {
-        const newProducts = cards.map(cardState => {
-          // console.log('Карточка из стейта', cardState);
-          // console.log('Карточка с сервера', newCard);
-          return cardState._id === newCard._id ? newCard : cardState
-        })
-        setCards(newProducts)
-      })
-  }
+    const updateCard = await api.changeLikeProduct(product._id, liked);
+    const newProducts = cards.map(cardState => {
+      // console.log('Карточка из стейта', cardState);
+      // console.log('Карточка с сервера', newCard);
+      return cardState._id === updateCard._id ? updateCard : cardState;
+    });
+    setCards(newProducts);
+    return updateCard;
+  }, [currentUser])
+
+  // console.log(UserContext);
+
+const toggleTheme = () => {
+  theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark) 
+}
 
   return (
-    <>
-      {/* <Header user={currentUser} onUdateUser={handleUpdateUser}> */}
-      <Header>
-        <Logo className="logo logo_place_holder" />
-        <Search onSubmit={handleFormSubmit} onInput={handleInputChange} />
-      </ Header>
-      <main className="content container">
-        <SeachInfo searchCount={cards.length} searchText={searchQuery} />
-        <Routes>
-          <Route index element={
-            <CatalogPage
-              isLoading={isLoading}
-              cards={cards}
-              handleProductLike={handleProductLike}
-              currentUser={currentUser}
+    <ThemeContext.Provider value={{theme: themes.light, toggleTheme}}>
+      <UserContext.Provider value={{ user: currentUser }}>
+        <CardContext.Provider value={{ cards, handleLike: handleProductLike }} >
+          {/* <Header user={currentUser} onUdateUser={handleUpdateUser}> */}
+          <Header>
+            <Logo className="logo logo_place_holder" />
+            <Search
+              onSubmit={handleFormSubmit}
+            // onInput={handleInputChange} 
             />
-          } />
-          <Route path='/product' element={
-            <ProductPage
-              currentUser={currentUser}
-              isLoading={isLoading}
-            />
-          } />
-        </Routes>
+          </ Header>
+          <main className="content container" style={{backgroundColor: theme.background}}>
+            <SeachInfo searchText={searchQuery} />
+            <Routes>
+              <Route path='/' element={
+                <CatalogPage
+                  isLoading={isLoading}
+                />
+              } />
+              <Route path='/product/:idProduct' element={
+                <ProductPage
+                  isLoading={isLoading}
+                />
+              } />
+              <Route path='*' element={<NotFoundPage />} />
+            </Routes>
 
-      </main>
-      <Footer />
-    </>
+          </main>
+          <Footer />
+        </CardContext.Provider>
+      </UserContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 

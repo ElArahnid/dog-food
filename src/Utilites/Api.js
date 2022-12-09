@@ -58,7 +58,7 @@ class Api {
   }
 
   changeLikeProduct(productId, isLike) {
-    return fetch(`${this._baseUrl}/products/lijes/${productId}`, {
+    return fetch(`${this._baseUrl}/products/likes/${productId}`, {
       method: isLike ? "DELETE" : "PUT",
       headers: this._headers
     }).then(onResponce)

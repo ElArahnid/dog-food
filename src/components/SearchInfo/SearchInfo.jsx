@@ -1,6 +1,11 @@
+import { useContext } from "react";
+import { CardContext } from "../../context/cardContext";
 import "./index.css";
 
-const SeachInfo = ({ searchText, searchCount }) => {
+const SeachInfo = ({ searchText }) => {
+
+  const {cards} = useContext(CardContext);
+  const searchCount = cards.length;
 
 // функцмя склонения по датам и прочему
 const printNumerals = (number, titles) => {

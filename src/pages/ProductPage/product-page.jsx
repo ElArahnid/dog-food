@@ -1,23 +1,25 @@
 import React, { useCallback, useEffect, useState } from "react";
-import CardList from "../../components/CardList/CardList";
-import Footer from "../../components/Footer/Footer";
-import Header from "../../components/Header/Header";
-import Logo from "../../components/Logo/Logo";
+import { useContext } from "react";
+import { useParams } from "react-router-dom";
 import Product from "../../components/Product/Product";
-import Search from "../../components/Search/Search";
-import SeachInfo from "../../components/SearchInfo/SearchInfo";
-import Sort from "../../components/Sort/Sort";
 import Spinner from "../../components/Spinner";
+import { CardContext } from "../../context/cardContext";
+import { UserContext } from "../../context/userContext";
 import api from "../../Utilites/Api";
-import { isLiked } from "../../Utilites/product";
+import { NotFoundPage } from "../NotFoundPage/not-found";
 
-const ProductPage = ({currentUser, isLoading}) => {
+const ProductPage = ({ isLoading }) => {
   // const [searchQuery, setSearchQuery] = useState("");
 
   // const [currentUser, setCurrentUser] = useState(null);
   // const [isLoading, setIsLoading] = useState(false);
 
+  const [catchError, setCatchError] = useState(false);
   const [product, setProduct] = useState(null);
+  const { idProduct } = useParams();
+
+  const { handleLike } = useContext(CardContext);
+  // console.log(UserContext);
 
   // const handleRequest = useCallback((searchQuery) => {
   //   // const query = defaultSearchQuery || searchQuery;
@@ -42,38 +44,44 @@ const ProductPage = ({currentUser, isLoading}) => {
   // };
 
   const handleProductLike = useCallback(() => {
-    const liked = isLiked(product.likes, currentUser._id);
-    // Метод some() проверяет, удовлетворяет ли какой-либо элемент массива условию, заданному в передаваемой функции.
-    // Возвращаемое значение
-    // true, если функция проверки возвращает truthy значение хотя бы для одного элемента массива. Иначе, false.
-    // const isLiked = product.likes.some(id => id === currentUser._id)
-    api.changeLikeProduct(product._id, liked).then((newProduct) => {
-      // const newProducts = cards.map(cardState => {
-      //   // console.log('Карточка из стейта', cardState);
-      //   // console.log('Карточка с сервера', newCard);
-      //   return cardState._id === newCard._id ? newCard : cardState
-      // })
-      setProduct(newProduct);
+    handleLike(product).then((updateProduct) => {
+      // console.log(updateProduct, product);
+      setProduct(updateProduct);
     });
-  }, [product, currentUser])
+  }, [handleLike, product]);
 
   useEffect(() => {
     // setIsLoading(true);
-    Promise.all([api.getProductById("622c77e877d63f6e70967d22"), api.getUserInfo()])
-      .then(([productsData, userData]) => {
+    api
+      .getProductById(idProduct)
+      .then((productsData) => {
         // setCurrentUser(userData);
         setProduct(productsData);
-        // console.log(productsData.products);
       })
-      .catch((err) => console.log(err))
-      // .finally(() => setIsLoading(false));
-  }, []);
+      .catch((err) => {
+        setCatchError(true);
+        // console.log(err);
+      });
 
+    // .finally(() => setIsLoading(false));
+  }, [catchError, idProduct]);
+  // console.log(catchError);
+  // console.log(handleLike);
   return (
     <>
-        <div className="content__cards">
-          {isLoading ? <Spinner /> : <Product  {...product} currentUser={currentUser} onProductLike={handleProductLike} />}
-        </div>
+      <div className="content__cards">
+        {catchError ? (
+          <NotFoundPage />
+        ) : isLoading ? (
+          <Spinner />
+        ) : (
+          <Product
+            {...product}
+            setProduct={setProduct}
+            onProductLike={handleProductLike}
+          />
+        )}
+      </div>
     </>
   );
 };

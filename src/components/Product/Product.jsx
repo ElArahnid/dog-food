@@ -4,21 +4,28 @@ import { calcDiscountPrice, isLiked} from '../../Utilites/product';
 import { ReactComponent as Save } from './img/save.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/userContext';
+import { useContext } from 'react';
 
-export const Product = ({ currentUser, _id, onProductLike, available, description, discount, isPublished, likes = [], name, pictures, price, reviews, stock, tags, wight}) => {
+export const Product = ({ onProductLike, description, discount, likes = [], name, pictures, price}) => {
     // console.log('карточка товара');
+
+    const {user: currentUser} = useContext(UserContext)
+
     const discount_price = calcDiscountPrice(price, discount);
     const isLike = isLiked(likes, currentUser?._id);
+
     const createMarkup = (textToHtml) => {
         return { __html: textToHtml }
     }
     const descriptionHtml = createMarkup(description);
-
+    const backNavigate = useNavigate();
+    // console.log(backNavigate);
     return (
         <>
         <div>
-            <a href="#" className="button-back">Назад</a>
+            <span className={s.back} onClick={() => {backNavigate(-1)}}>Назад</span>
             <h1 className={s.productTitle}>{name}</h1>
             <div>
                 <span>Артикул: </span> <b>58484848</b>

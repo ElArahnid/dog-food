@@ -2,7 +2,7 @@ import CardList from "../../components/CardList/CardList";
 import Sort from "../../components/Sort/Sort";
 import Spinner from "../../components/Spinner";
 
-export const CatalogPage = ({isLoading, cards, handleProductLike, currentUser}) => {
+export const CatalogPage = ({isLoading}) => {
   return (
     <>
       <Sort />
@@ -10,11 +10,7 @@ export const CatalogPage = ({isLoading, cards, handleProductLike, currentUser}) 
         {isLoading ? (
           <Spinner />
         ) : (
-          <CardList
-            goods={cards}
-            onProductLike={handleProductLike}
-            currentUser={currentUser}
-          />
+          <CardList />
         )}
       </div>
     </>

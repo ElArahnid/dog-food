@@ -1,47 +1,31 @@
 import React, { useCallback, useEffect, useState } from "react";
+
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
-import Product from "../../components/Product/Product";
-import Spinner from "../../components/Spinner";
-import { CardContext } from "../../context/cardContext";
 import { UserContext } from "../../context/userContext";
+import { useApi } from "../../hooks/useApi";
+
 import api from "../../Utilites/Api";
+import Spinner from "../../components/Spinner";
+import Product from "../../components/Product/Product";
+import { CardContext } from "../../context/cardContext";
 import { NotFoundPage } from "../NotFoundPage/not-found";
 
-const ProductPage = ({ isLoading }) => {
-  // const [searchQuery, setSearchQuery] = useState("");
+const ProductPage = () => {
 
-  // const [currentUser, setCurrentUser] = useState(null);
-  // const [isLoading, setIsLoading] = useState(false);
-
-  const [catchError, setCatchError] = useState(false);
-  const [product, setProduct] = useState(null);
   const { idProduct } = useParams();
-
   const { handleLike } = useContext(CardContext);
-  // console.log(UserContext);
 
-  // const handleRequest = useCallback((searchQuery) => {
-  //   // const query = defaultSearchQuery || searchQuery;
-  //   // const filterCards = cards.filter(
-  //   //   item => (item.name).toLowerCase().includes(searchQuery.toLowerCase())
-  //   // );
-  //   // setCards(filterCards);
-  //   // console.log(searchQuery.length);
-  //   setIsLoading(true);
-  //   api
-  //     .search(searchQuery)
-  //     .then((searchResult) => {
-  //       // console.log(searchResult);
-  //     })
-  //     .catch((err) => console.log(err))
-  //     .finally(() => setIsLoading(false))
-  // }, []);
+  const handleGetProduct = useCallback( 
+      () => api.getProductById(idProduct), [idProduct]
+    );
 
-  // const handleFormSubmit = (val) => {
-  //   setSearchQuery(val)
-  //   handleRequest(val);
-  // };
+  const {
+    data: product, 
+    setData: setProduct, 
+    loading: isLoading, 
+    error: catchError 
+  } = useApi( handleGetProduct );
 
   const handleProductLike = useCallback(() => {
     handleLike(product).then((updateProduct) => {
@@ -50,23 +34,6 @@ const ProductPage = ({ isLoading }) => {
     });
   }, [handleLike, product]);
 
-  useEffect(() => {
-    // setIsLoading(true);
-    api
-      .getProductById(idProduct)
-      .then((productsData) => {
-        // setCurrentUser(userData);
-        setProduct(productsData);
-      })
-      .catch((err) => {
-        setCatchError(true);
-        // console.log(err);
-      });
-
-    // .finally(() => setIsLoading(false));
-  }, [catchError, idProduct]);
-  // console.log(catchError);
-  // console.log(handleLike);
   return (
     <>
       <div className="content__cards">

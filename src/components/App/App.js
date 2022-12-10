@@ -111,25 +111,24 @@ function App() {
     return updateCard;
   }, [currentUser])
 
-  // console.log(UserContext);
-
 const toggleTheme = () => {
-  theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark) 
+  theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark) ;
 }
 
+document.querySelector("#root").className = theme.class;
   return (
     <ThemeContext.Provider value={{theme: themes.light, toggleTheme}}>
       <UserContext.Provider value={{ user: currentUser }}>
         <CardContext.Provider value={{ cards, handleLike: handleProductLike }} >
           {/* <Header user={currentUser} onUdateUser={handleUpdateUser}> */}
-          <Header>
+          <Header themeStatus={theme.status}>
             <Logo className="logo logo_place_holder" />
             <Search
               onSubmit={handleFormSubmit}
             // onInput={handleInputChange} 
             />
           </ Header>
-          <main className="content container" style={{backgroundColor: theme.background}}>
+          <main className="content container">
             <SeachInfo searchText={searchQuery} />
             <Routes>
               <Route path='/' element={

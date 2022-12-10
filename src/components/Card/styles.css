@@ -26,6 +26,8 @@
 	width: 100%;
 	object-fit: contain;
 	margin-bottom: 16px;
+	border-radius: 10px;
+	box-sizing: border-box;
 }
 
 .card__old-price {
@@ -95,7 +97,7 @@
 	cursor: pointer;
 	background: none;
 	border: none;
-	padding: 0;
+	padding: 5px;
 	display: flex;
 }
 

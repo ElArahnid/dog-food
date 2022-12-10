@@ -16,6 +16,22 @@ body {
 	min-height: 100vh;
 }
 
+#root.light {
+	background-color: white;
+	transition: 0.5s;
+}
+
+#root.dark {
+	background-color: black;
+	color: white;
+}
+
+#root.dark .card {
+	background-color: #424040;
+	border-radius: 10px;
+	transition: 0.5s;
+}
+
 .container {
 	max-width: 1024px;
 	padding-left: 16px;

@@ -77,9 +77,11 @@ function App() {
         // устанавливаем состояние карточек
         setCards(productsData.products)
 
-        
+        const favorProduct = productsData.filter(item => isLiked(item.likes, currentUser._id));
+        console.log(favorProduct);
 
-      }).catch(err => console.log(err))
+      })
+      .catch(err => console.log(err))
       .finally(() => setIsLoading(false))
     // тут то же самое, но в другом варианте
     //   api.getProductList()

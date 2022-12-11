@@ -13,7 +13,14 @@
 	gap: 80px;
 }
 
-.btnTheme {
+.faArea {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 17px;
+}
+
+.btnTheme, .btnThemeActive {
 	padding: 3px;
     font-size: 24px;
     border: 0;
@@ -23,6 +30,10 @@
     display: inline-block;
 	cursor: pointer;
 	width: 25px;
+}
+
+.btnThemeActive {
+	color: red;
 }
 
 @media (max-width: 600px) {

@@ -28,11 +28,10 @@ const ProductPage = () => {
   } = useApi( handleGetProduct );
 
   const handleProductLike = useCallback(() => {
-    handleLike(product).then((updateProduct) => {
-      // console.log(updateProduct, product);
+      handleLike(product).then((updateProduct) => {
       setProduct(updateProduct);
     });
-  }, [handleLike, product]);
+  }, [handleLike, product, setProduct]);
 
   return (
     <>

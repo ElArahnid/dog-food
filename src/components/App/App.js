@@ -19,6 +19,7 @@ import { NotFound, NotFoundPage } from '../../pages/NotFoundPage/not-found';
 import { UserContext } from '../../context/userContext';
 import { CardContext } from '../../context/cardContext';
 import { ThemeContext, themes } from '../../context/themeContext';
+import { FaqPage } from '../../pages/FAQPage/faq-page';
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -26,6 +27,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState(themes.light);
+  const [favor, setFavor] = useState([]);
+
   const debounceSearchQuery = useDebounce(searchQuery, 500);
   const navigate = useNavigate();
 
@@ -74,6 +77,8 @@ function App() {
         // устанавливаем состояние карточек
         setCards(productsData.products)
 
+        
+
       }).catch(err => console.log(err))
       .finally(() => setIsLoading(false))
     // тут то же самое, но в другом варианте
@@ -103,19 +108,26 @@ function App() {
     // const isLiked = product.likes.some(id => id === currentUser._id)
     const updateCard = await api.changeLikeProduct(product._id, liked);
     const newProducts = cards.map(cardState => {
-      // console.log('Карточка из стейта', cardState);
-      // console.log('Карточка с сервера', newCard);
       return cardState._id === updateCard._id ? updateCard : cardState;
     });
+
+    if(!liked) {
+      setFavor(prevState => [...prevState, updateCard])
+    }
+    else{
+      setFavor(prevState => prevState.filter(card => card._id !== updateCard._id))
+    }
+
     setCards(newProducts);
     return updateCard;
-  }, [currentUser])
+  }, [cards, currentUser])
 
 const toggleTheme = () => {
   theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark) ;
 }
 
 document.querySelector("#root").className = theme.class;
+
   return (
     <ThemeContext.Provider value={{theme: themes.light, toggleTheme}}>
       <UserContext.Provider value={{ user: currentUser }}>
@@ -141,6 +153,7 @@ document.querySelector("#root").className = theme.class;
                   isLoading={isLoading}
                 />
               } />
+              <Route path='/faq' element={<FaqPage />} />
               <Route path='*' element={<NotFoundPage />} />
             </Routes>
 

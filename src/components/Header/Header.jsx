@@ -11,7 +11,7 @@ import { ThemeContext, themes } from "../../context/themeContext";
 import s from "./index.module.css";
 import { NavLink } from "react-router-dom";
 
-function Header({ children, user, onUpdateUser, themeStatus }) {
+function Header({ children, user, onUpdateUser, themeStatus, favor }) {
   // console.log(children);
   // console.log(user.email, user.name);
   // const handleClickButtonEdit = (e) => {
@@ -38,12 +38,13 @@ function Header({ children, user, onUpdateUser, themeStatus }) {
               <FontAwesomeIcon icon={faFileCircleQuestion} />
             </NavLink>
             <NavLink
-              to="/"
+              to="/favorites"
               className={({ isActive }) =>
                 isActive ? s.btnThemeActive : s.btnTheme
               }
             >
               <FontAwesomeIcon icon={faHeart} />
+              {favor.length > 0 ? <span className={s.iconBubble}>{favor.length}</span> : null}
             </NavLink>
             <button className={s.btnTheme} onClick={toggleTheme}>
               {themeStatus && <FontAwesomeIcon icon={faMoon} />}

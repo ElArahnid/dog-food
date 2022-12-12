@@ -30,10 +30,35 @@
     display: inline-block;
 	cursor: pointer;
 	width: 25px;
+	position: relative;
 }
 
 .btnThemeActive {
 	color: red;
+}
+
+.iconBubble{
+	background-color: #ffffff62;
+	border-radius: 50%;
+	color: #00000089;
+	font-weight: 900;
+	font-size: 14px;
+	width: 22px;
+	height: 22px;
+	line-height: 1.25;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	position: absolute;
+	bottom: 50%;
+	left: 60%;
+	transition: 1s;
+}
+
+.iconBubble:hover {
+	background-color: #ff000062;
+	transition: 1s;
 }
 
 @media (max-width: 600px) {

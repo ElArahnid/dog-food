@@ -20,6 +20,7 @@ import { UserContext } from '../../context/userContext';
 import { CardContext } from '../../context/cardContext';
 import { ThemeContext, themes } from '../../context/themeContext';
 import { FaqPage } from '../../pages/FAQPage/faq-page';
+import { FavorPage } from '../../pages/FavorPage/favor-page';
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -28,6 +29,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState(themes.light);
   const [favor, setFavor] = useState([]);
+
+  // console.log(cards);
 
   const debounceSearchQuery = useDebounce(searchQuery, 500);
   const navigate = useNavigate();
@@ -70,15 +73,17 @@ function App() {
     // Метод Promise.all(iterable) возвращает промис, который выполнится тогда, когда будут выполнены все промисы, переданные в виде перечисляемого аргумента, или отклонено любое из переданных промисов.
     Promise.all([api.getProductList(), api.getUserInfo()])
       .then(([productsData, userData]) => {
-
-        // устанавливаем состяоние пользовтателя
+        // устанавливаем состояние пользователя
         setCurrentUser(userData)
 
         // устанавливаем состояние карточек
         setCards(productsData.products)
 
-        const favorProduct = productsData.filter(item => isLiked(item.likes, currentUser._id));
-        console.log(favorProduct);
+        // console.log(productsData, productsData.products);
+
+        const favorProduct = (productsData?.products).filter(item => isLiked(item.likes, userData._id));
+        // console.log(favorProduct, userData);
+        setFavor(previousState => favorProduct)
 
       })
       .catch(err => console.log(err))
@@ -133,9 +138,9 @@ document.querySelector("#root").className = theme.class;
   return (
     <ThemeContext.Provider value={{theme: themes.light, toggleTheme}}>
       <UserContext.Provider value={{ user: currentUser }}>
-        <CardContext.Provider value={{ cards, handleLike: handleProductLike }} >
+        <CardContext.Provider value={{ cards, favor, handleLike: handleProductLike }} >
           {/* <Header user={currentUser} onUdateUser={handleUpdateUser}> */}
-          <Header themeStatus={theme.status}>
+          <Header themeStatus={theme.status} favor={favor}>
             <Logo className="logo logo_place_holder" />
             <Search
               onSubmit={handleFormSubmit}
@@ -156,6 +161,7 @@ document.querySelector("#root").className = theme.class;
                 />
               } />
               <Route path='/faq' element={<FaqPage />} />
+              <Route path='/favorites' element={<FavorPage isLoading={isLoading} />} />
               <Route path='*' element={<NotFoundPage />} />
             </Routes>
 

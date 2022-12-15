@@ -4,10 +4,16 @@ import LogoSrc from '../../assets/images/logo.svg';
 import { Link } from 'react-router-dom';
 
 function Logo({className, href, ...props}) {
+    const hrefVariables = href ? href : "#";
     return (
-        <Link to='/' className={className ? className : "logo"} {...props}>
+        hrefVariables ?
+        <Link to={{pathname: hrefVariables}} className={className ? className : "logo"} {...props}>
             <img src={LogoSrc} alt="Dog Food Logo" className='logo__pic' />
         </Link>
+        :
+        <a href="#" className={className ? className : "logo"} {...props}>
+            <img src={LogoSrc} alt="Dog Food Logo" className='logo__pic' />
+        </a>
     )
 }
 

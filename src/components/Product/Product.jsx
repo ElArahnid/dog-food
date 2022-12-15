@@ -4,9 +4,9 @@ import { calcDiscountPrice, isLiked} from '../../Utilites/product';
 import { ReactComponent as Save } from './img/save.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg';
-import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 import { useContext } from 'react';
+import { ContentHeader } from '../ContentHeader/ContentHeader';
 
 export const Product = ({ onProductLike, description, discount, likes = [], name, pictures, price}) => {
     // console.log('карточка товара');
@@ -20,16 +20,12 @@ export const Product = ({ onProductLike, description, discount, likes = [], name
         return { __html: textToHtml }
     }
     const descriptionHtml = createMarkup(description);
-    const backNavigate = useNavigate();
     // console.log(backNavigate);
     return (
         <>
+        <ContentHeader title={name} />
         <div>
-            <span className={s.back} onClick={() => {backNavigate(-1)}}>Назад</span>
-            <h1 className={s.productTitle}>{name}</h1>
-            <div>
-                <span>Артикул: </span> <b>58484848</b>
-            </div>
+            <span>Артикул: </span> <b>58484848</b>
         </div>
         <div className={s.product}>
             <div className={s.imgWrapper}>
@@ -39,7 +35,7 @@ export const Product = ({ onProductLike, description, discount, likes = [], name
             <span className={discount ? s.oldPrice : s.price}>
                 {price}&nbsp;₽
             </span>
-            {discount && <span className={cn(s.price, 'card__price_type_discount')}>{discount_price}&nbsp;₽</span> }
+            {discount !== 0 ? <span className={cn(s.price, 'card__price_type_discount')}>{discount_price}&nbsp;₽</span> : null }
             <div className={s.btnWrap}>
                 <div className={s.left}>
                 <button className={s.minus}>-</button>

@@ -48,13 +48,14 @@ function App() {
       })
       .catch(err => console.log(err))
       .finally(() => { setIsLoading(false) })
-  }, [searchQuery])
+  }, [debounceSearchQuery])
 
   const handleFormSubmit = (inputText) => {
     setIsLoading(true)
     navigate('/');
-    setSearchQuery(+inputText)
+    setSearchQuery(inputText)
     handleRequest();
+    // console.log(inputText);
   }
 
   const handleInputChange = (inputValue) => {
@@ -137,31 +138,27 @@ document.querySelector("#root").className = theme.class;
 
   return (
     <ThemeContext.Provider value={{theme: themes.light, toggleTheme}}>
-      <UserContext.Provider value={{ user: currentUser }}>
+      <UserContext.Provider value={{ user: currentUser, isLoading }}>
         <CardContext.Provider value={{ cards, favor, handleLike: handleProductLike }} >
           {/* <Header user={currentUser} onUdateUser={handleUpdateUser}> */}
           <Header themeStatus={theme.status} favor={favor}>
-            <Logo className="logo logo_place_holder" />
+            <Logo className="logo logo_place_holder" href="/" />
             <Search
               onSubmit={handleFormSubmit}
-            // onInput={handleInputChange} 
+            onInput={handleInputChange} 
             />
           </ Header>
           <main className="content container">
             <SeachInfo searchText={searchQuery} />
             <Routes>
               <Route path='/' element={
-                <CatalogPage
-                  isLoading={isLoading}
-                />
+                <CatalogPage />
               } />
               <Route path='/product/:idProduct' element={
-                <ProductPage
-                  isLoading={isLoading}
-                />
+                <ProductPage isLoading={isLoading} />
               } />
               <Route path='/faq' element={<FaqPage />} />
-              <Route path='/favorites' element={<FavorPage isLoading={isLoading} />} />
+              <Route path='/favorites' element={<FavorPage />} />
               <Route path='*' element={<NotFoundPage />} />
             </Routes>
 

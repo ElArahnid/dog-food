@@ -1,4 +1,4 @@
 import { createContext } from "react";
 
 export const CardContext = createContext(null);
-CardContext.displayName = 'UserContext'
+CardContext.displayName = 'CardContext'

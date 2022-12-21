@@ -24,22 +24,21 @@ export const CatalogPage = () => {
 
   const {cards} = useContext(CardContext);
   console.log('cards ', cards);
-  const [sortedCard, setSortedCard] = useState([]);
+
+  const [sortedCard, setSortedCard] = useState(cards);
   console.log('sortedCard ', sortedCard);
   
   const selectTypeSort = (sortArg) => {
 	switch(sortArg) {
-	case 'cheap': setSortedCard(cards.sort((a, b) => b['price'] - a['price']));
+	case 'cheap': setSortedCard(cards.sort((a, b) => a['price'] - b['price']));
 	break;
-	case 'low': setSortedCard(cards.sort((a, b) => a['price'] - b['price']));
+	case 'low': setSortedCard(cards.sort((a, b) => b['price'] - a['price']));
 	break;
 	case 'sale': setSortedCard(cards.sort((a, b) => b['discount'] - a['discount']));
 	break;
 	default: setSortedCard(cards);
 	}
-	console.log(cards);
 }
-
 
   return (
     <>

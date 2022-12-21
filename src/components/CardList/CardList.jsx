@@ -9,7 +9,6 @@ const CardList = ({ cards }) => {
 
   const { isLoading } = useContext(UserContext);
   const navigate = useNavigate();
-
   return (
     <>
       {

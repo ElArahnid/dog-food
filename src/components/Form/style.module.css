@@ -1,0 +1,19 @@
+/* body {
+display: flex;
+justify-content: center;
+} */
+
+form {
+align-self: center;
+}
+
+input {
+padding: 7px;
+margin: 7px 0;
+display: block;
+}
+
+button {
+padding: 7px;
+margin: 7px 0;
+}

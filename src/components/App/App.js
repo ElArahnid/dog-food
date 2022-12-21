@@ -14,13 +14,14 @@ import { isLiked } from '../../Utilites/product';
 import Spinner from '../Spinner';
 import { CatalogPage } from '../../pages/CatalogPage/catalog-page';
 import ProductPage from '../../pages/ProductPage/product-page';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Form, Route, Routes, useNavigate } from 'react-router-dom';
 import { NotFound, NotFoundPage } from '../../pages/NotFoundPage/not-found';
 import { UserContext } from '../../context/userContext';
 import { CardContext } from '../../context/cardContext';
 import { ThemeContext, themes } from '../../context/themeContext';
 import { FaqPage } from '../../pages/FAQPage/faq-page';
 import { FavorPage } from '../../pages/FavorPage/favor-page';
+import { FormLogin } from '../Form/FormLogin';
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -134,6 +135,11 @@ const toggleTheme = () => {
   theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark) ;
 }
 
+const addContact = useCallback((formData) => {
+  console.log(formData);
+}, [] )
+
+
 document.querySelector("#root").className = theme.class;
 
   return (
@@ -148,6 +154,7 @@ document.querySelector("#root").className = theme.class;
             onInput={handleInputChange} 
             />
           </ Header>
+            <FormLogin serializeCallBack={addContact} />
           <main className="content container">
             <SeachInfo searchText={searchQuery} />
             <Routes>
@@ -159,6 +166,7 @@ document.querySelector("#root").className = theme.class;
               } />
               <Route path='/faq' element={<FaqPage />} />
               <Route path='/favorites' element={<FavorPage />} />
+              {/* <Route path='/form' element={<FormLogin />} /> */}
               <Route path='*' element={<NotFoundPage />} />
             </Routes>
 

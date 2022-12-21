@@ -1,7 +1,8 @@
 import cn from 'classnames';
 import './styles.css';
 
-function Sort({defaultSort, tabs = [], selectTypeSort}) {
+function Sort({ defaultSort, tabs = [], selectTypeSort }) {
+
   const handleSort = (evt, tab) => {
     evt.preventDefault(); 
     selectTypeSort(tab.id);

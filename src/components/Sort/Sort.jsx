@@ -1,12 +1,14 @@
 import cn from 'classnames';
+import { useCallback } from 'react';
 import './styles.css';
 
 function Sort({ defaultSort, tabs = [], selectTypeSort }) {
 
-  const handleSort = (evt, tab) => {
+  const handleSort = useCallback((evt, tab) => {
     evt.preventDefault(); 
     selectTypeSort(tab.id);
-  }
+  }, [selectTypeSort])
+
   return (
     <div className='sort content__sort'>
       {tabs.map(tab => (

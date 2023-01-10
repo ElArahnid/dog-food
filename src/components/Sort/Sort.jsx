@@ -1,28 +1,38 @@
+import { useCallback, useState } from 'react';
 import cn from 'classnames';
-import { useCallback } from 'react';
-import './styles.css';
+import s from './style.module.css';
 
-function Sort({ defaultSort, tabs = [], selectTypeSort }) {
+function Sort({ tabs = [], selectTypeSort }) {
+
+  const [selectedTab, setSelectedTab] = useState()
 
   const handleSort = useCallback((evt, tab) => {
-    evt.preventDefault(); 
+    // evt.preventDefault(); 
     selectTypeSort(tab.id);
+    setSelectedTab(tab.id);
+    // console.log(evt.target.innerText + ' <-- evt', tab.id + ' <-- tab');
   }, [selectTypeSort])
+  
+// console.log(selectedTab);
 
   return (
-    <div className='sort content__sort'>
+    <div className={cn(s.sort, s.content__sort)}>
       {tabs.map(tab => (
         <div 
           key={tab.id}
           id= {tab.id}
-          className={cn("sort__link", { "sort__link__selected" : defaultSort === tab.id })}
+          className={cn(
+            s.sort__link, 
+            {[s.sort__link_selected] : tab.id === selectedTab}
+            )
+          }
         >
-          <a onClick={(evt) =>
-            handleSort(evt, tab)
+          <span onClick={(evnt) =>
+            handleSort(evnt, tab)
             }
           >
             {tab.title}
-          </a>
+          </span>
         </div>
       ))}
     </div>

@@ -11,9 +11,9 @@ function Logo({className, href, ...props}) {
             <img src={LogoSrc} alt="Dog Food Logo" className='logo__pic' />
         </Link>
         :
-        <a href="#" className={className ? className : "logo"} {...props}>
+        <Link href="#" className={className ? className : "logo"} {...props}>
             <img src={LogoSrc} alt="Dog Food Logo" className='logo__pic' />
-        </a>
+        </Link>
     )
 }
 

@@ -1,20 +1,23 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
+
 import { useApi } from "../../hooks/useApi";
 
 import api from "../../Utilites/Api";
-import Spinner from "../../components/Spinner";
+// import Spinner from "../../components/Spinner";
 import Product from "../../components/Product/Product";
 import { CardContext } from "../../context/cardContext";
 import { NotFoundPage } from "../NotFoundPage/not-found";
+import { Skeleton } from "../../components/Spinner/ContentLoader";
 
 const ProductPage = () => {
 
   const { idProduct } = useParams();
   const { handleLike } = useContext(CardContext);
+  const { isLoading } = useContext(UserContext);
 
   const handleGetProduct = useCallback( 
       () => api.getProductById(idProduct), [idProduct]
@@ -23,7 +26,6 @@ const ProductPage = () => {
   const {
     data: product, 
     setData: setProduct, 
-    loading: isLoading, 
     error: catchError 
   } = useApi( handleGetProduct );
 
@@ -39,7 +41,8 @@ const ProductPage = () => {
         {catchError ? (
           <NotFoundPage />
         ) : isLoading ? (
-          <Spinner />
+          // <Spinner />
+          <Skeleton />
         ) : (
           <Product
             {...product}

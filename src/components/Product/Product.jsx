@@ -5,13 +5,16 @@ import { ReactComponent as Save } from './img/save.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg';
 import { UserContext } from '../../context/userContext';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { ContentHeader } from '../ContentHeader/ContentHeader';
+import { Rate } from '../Rate/Rate';
 
 export const Product = ({ onProductLike, description, discount, likes = [], name, pictures, price}) => {
     // console.log('карточка товара');
 
-    const {user: currentUser} = useContext(UserContext)
+    const {user: currentUser} = useContext(UserContext);
+
+    const [rating, setRating] = useState(0);
 
     const discount_price = calcDiscountPrice(price, discount);
     const isLike = isLiked(likes, currentUser?._id);
@@ -25,7 +28,8 @@ export const Product = ({ onProductLike, description, discount, likes = [], name
         <>
         <ContentHeader title={name} />
         <div>
-            <span>Артикул: </span> <b>58484848</b>
+            <span>Артикул: 1234567890</span> 
+            <Rate rating={rating} setRating={setRating} isEditable />
         </div>
         <div className={s.product}>
             <div className={s.imgWrapper}>

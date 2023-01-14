@@ -1,27 +1,42 @@
 import { StrictMode, useCallback, useEffect, useState } from "react";
 import Header from "../Header/Header";
-import Sort from "../Sort/Sort";
-import CardList from "../CardList/CardList";
 import Logo from "../Logo/Logo";
 import Search from "../Search/Search";
 import Footer from "../Footer/Footer";
 // import data from '../../assets/data.json';
 import "./styles.css";
 import SeachInfo from "../SearchInfo/SearchInfo";
-import api from "../../Utilites/Api";
-import useDebounce from "../../hooks/useDebounce";
-import { isLiked } from "../../Utilites/product";
-import Spinner from "../Spinner";
-import { CatalogPage } from "../../pages/CatalogPage/catalog-page";
-import ProductPage from "../../pages/ProductPage/product-page";
-import { Form, Route, Routes, useNavigate } from "react-router-dom";
-import { NotFound, NotFoundPage } from "../../pages/NotFoundPage/not-found";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
 import { CardContext } from "../../context/cardContext";
 import { ThemeContext, themes } from "../../context/themeContext";
+import api from "../../Utilites/Api";
+import useDebounce from "../../hooks/useDebounce";
+import { isLiked } from "../../Utilites/product";
+// import Spinner from "../Spinner";
+import { CatalogPage } from "../../pages/CatalogPage/catalog-page";
+import ProductPage from "../../pages/ProductPage/product-page";
+import { NotFoundPage } from "../../pages/NotFoundPage/not-found";
 import { FaqPage } from "../../pages/FAQPage/faq-page";
 import { FavorPage } from "../../pages/FavorPage/favor-page";
 import { FormLogin } from "../Form/FormLogin";
+import RegistrationForm from "../Form/RegistrationForm";
+import { Modal } from "../Modal/Modal";
+
+// function ContactList({contacts}) {
+//   // console.log(contacts);
+//   return (
+//     <div>
+//       {contacts.map((contact) => (
+//         <div key={contact.phoneNumber}>
+//           <p>{contact.name}</p>
+//           <p>{contact.lastName}</p>
+//           <p>{contact.phoneNumber}</p>
+//         </div>
+//         ))}
+//     </div>
+//     )
+// }
 
 function App() {
   const [cards, setCards] = useState([]);
@@ -30,8 +45,11 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState(themes.light);
   const [favor, setFavor] = useState([]);
+  const [checkedSearchInFavor, setCheckedSearchInFavor] = useState(true);
+  const [contacts, setContacts] = useState([]);
+  const [isOpenModalForm, setIsOpenModalForm] = useState(false);
 
-  // console.log(cards);
+  let location = useLocation();
 
   const debounceSearchQuery = useDebounce(searchQuery, 500);
   const navigate = useNavigate();
@@ -139,23 +157,51 @@ function App() {
     theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark);
   };
 
-  const addContact = useCallback((formData) => {
-    console.log(formData);
-  }, []);
+  const addContact = useCallback(
+    (formData) => {
+      setContacts([...contacts, formData]);
+    },
+    [contacts]
+  );
 
   document.querySelector("#root").className = theme.class;
+  document.querySelector("body").addEventListener("keyup", (e) => {if (e.key === 'Escape' || e.key === ' ') setIsOpenModalForm(false)});
 
   return (
     <StrictMode>
       <ThemeContext.Provider value={{ theme: themes.light, toggleTheme }}>
         <UserContext.Provider value={{ user: currentUser, isLoading }}>
-          <CardContext.Provider value={{ cards, favor, handleLike: handleProductLike }}>
+          <CardContext.Provider
+            value={{
+              cards,
+              favor,
+              searchQuery,
+              checkedSearchInFavor,
+              location,
+              setSearchQuery,
+              handleLike: handleProductLike,
+            }}
+          >
+            <Modal active={isOpenModalForm} setActive={setIsOpenModalForm}>
+              <RegistrationForm />
+            </Modal>
             {/* <Header user={currentUser} onUdateUser={handleUpdateUser}> */}
-            <Header themeStatus={theme.status} favor={favor}>
+            <Header
+              themeStatus={theme.status}
+              favor={favor}
+              setSearchQuery={setSearchQuery}
+              activeAuthModal={isOpenModalForm} setActiveAuthModal={setIsOpenModalForm}
+              
+            >
               <Logo className="logo logo_place_holder" href="/" />
-              <Search onSubmit={handleFormSubmit} onInput={handleInputChange} />
+              <Search
+                onSubmit={handleFormSubmit}
+                onInput={handleInputChange}
+                setCheckedSearchInFavor={setCheckedSearchInFavor}
+              />
             </Header>
-            <FormLogin serializeCallBack={addContact} />
+            {/* <FormLogin serializeCallBack={addContact} /> */}
+            {/* <ContactList contacts={contacts} /> */}
             <main className="content container">
               <SeachInfo searchText={searchQuery} />
               <Routes>
@@ -166,7 +212,7 @@ function App() {
                 />
                 <Route path="/faq" element={<FaqPage />} />
                 <Route path="/favorites" element={<FavorPage />} />
-                {/* <Route path='/form' element={<FormLogin />} /> */}
+                <Route path="/form" element={<FormLogin />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </main>

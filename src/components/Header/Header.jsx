@@ -5,13 +5,14 @@ import {
   faMoon,
   faFileCircleQuestion,
   faHeart,
+  faUserLock,
 } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
-import { ThemeContext, themes } from "../../context/themeContext";
+import { ThemeContext } from "../../context/themeContext";
 import s from "./index.module.css";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
-function Header({ children, user, onUpdateUser, themeStatus, favor }) {
+function Header({ children, themeStatus, favor, activeAuthModal, setActiveAuthModal }) {
   // console.log(children);
   // console.log(user.email, user.name);
   // const handleClickButtonEdit = (e) => {
@@ -44,12 +45,19 @@ function Header({ children, user, onUpdateUser, themeStatus, favor }) {
               }
             >
               <FontAwesomeIcon icon={faHeart} />
-              {favor.length > 0 ? <span className={s.iconBubble}>{favor.length}</span> : null}
+              {favor.length > 0 ? (
+                <span className={s.iconBubble}>{favor.length}</span>
+              ) : null}
             </NavLink>
             <button className={s.btnTheme} onClick={toggleTheme}>
               {themeStatus && <FontAwesomeIcon icon={faMoon} />}
               {!themeStatus && <FontAwesomeIcon icon={faSun} />}
             </button>
+            <NavLink
+              className={ activeAuthModal ? s.btnThemeActive : s.btnTheme }
+            >
+              <FontAwesomeIcon icon={faUserLock} onClick={() => setActiveAuthModal(true)} />
+            </NavLink>
           </div>
         </div>
       </div>

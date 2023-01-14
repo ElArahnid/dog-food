@@ -4,10 +4,11 @@ import "./index.css";
 
 const SeachInfo = ({ searchText }) => {
 
-  const {cards} = useContext(CardContext);
+  const {cards, location} = useContext(CardContext);
+  // console.log(location.pathname);
   const searchCount = cards.length;
 
-// функцмя склонения по датам и прочему
+// функция склонения по датам и прочему
 const printNumerals = (number, titles) => {
   number = Math.abs(number);
   if (Number.isInteger(number)) {
@@ -23,13 +24,14 @@ const printNumerals = (number, titles) => {
   return `${titles[1]}`;
 };
 
+if ((searchCount !== 0) && (location.pathname !== '/favorites')) 
   return (
     searchText && (
       <section className="search-title">
         По запросу <span>{searchText}</span> найдено {searchCount} {printNumerals(searchCount, ["товар", "товара", "товаров"])}
       </section>
     )
-  );
+  )
 };
 
 export default SeachInfo;

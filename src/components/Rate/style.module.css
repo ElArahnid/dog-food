@@ -1,0 +1,25 @@
+.filled {
+fill: #ffaa0d;
+transition: .5s;
+transform: scale(1.1) rotate(-10deg);
+margin-left: 3px;
+}
+
+.star {
+transition: .5s;
+display: inline;
+top: 0;
+}
+
+.editable {
+cursor: pointer;
+}
+
+.rate {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 7px 0;
+}

@@ -27,20 +27,14 @@ export const CatalogPage = () => {
 	setSortedCard();
 	}, [cards, sortedCard])
 
-	//   console.log('sortedCard ', sortedCard);
-
 	const selectTypeSort = useCallback( (sortArg) => {
     if (sortArg === "cheap") {
       setSortedCard(cards?.sort((a, b) => a["price"] - b["price"]));
-	//   console.log("cheaped");
     } else if (sortArg === "low") {
       setSortedCard(cards?.sort((a, b) => b["price"] - a["price"]));
-	//   console.log("lowed");
     } else if (sortArg === "sale") {
       setSortedCard(cards?.sort((a, b) => b["discount"] - a["discount"]));
-	//   console.log("saled");
     } 
-    // console.log(sortArg + ' <-- sortArg');
 	
   }, [cards])
 
@@ -48,10 +42,10 @@ export const CatalogPage = () => {
 
   return (
     <>
-      <Sort
+      {(cards.length !== 0) ? <Sort
         tabs={tabs}
         selectTypeSort={selectTypeSort}
-      />
+      /> : null}
       <div className="content__cards">
         <CardList cards={sortedCard} />
       </div>

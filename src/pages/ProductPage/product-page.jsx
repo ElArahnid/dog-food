@@ -41,7 +41,6 @@ const ProductPage = () => {
         {catchError ? (
           <NotFoundPage />
         ) : isLoading ? (
-          // <Spinner />
           <Skeleton />
         ) : (
           <Product

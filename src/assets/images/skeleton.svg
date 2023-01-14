@@ -1,10 +1,12 @@
 <svg
   role="img"
+  width="260"
+  height="500"
   aria-labelledby="loading-aria"
   viewBox="0 0 260 500"
   preserveAspectRatio="none"
 >
-  <title id="loading-aria">Загружается...</title>
+  <title id="loading-aria">Скоро всё будет...</title>
   <rect
     x="0"
     y="0"
@@ -15,7 +17,7 @@
   ></rect>
   <defs>
     <clipPath id="clip-path">
-        <rect x="387" y="550" rx="3" ry="3" width="67" height="11" /> 
+        <rect x="0" y="0" rx="0" ry="0" width="NaN" height="NaN" /> 
         <rect x="463" y="550" rx="3" ry="3" width="140" height="11" /> 
         <rect x="514" y="598" rx="3" ry="3" width="53" height="11" /> 
         <rect x="574" y="598" rx="3" ry="3" width="72" height="11" /> 

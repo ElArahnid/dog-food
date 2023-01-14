@@ -40,3 +40,12 @@
 .result {
   font-size: 45px;
 }
+
+.errorStyle {
+  color: rgba(255, 0, 0, 0.8);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.152);
+  font-size: 12px;
+  padding: 10px 0 3px 0;
+  font-weight: 600;
+  display: block;
+}

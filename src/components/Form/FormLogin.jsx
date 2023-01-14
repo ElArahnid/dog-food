@@ -34,7 +34,7 @@ const buttonSubmit = (e) => {
   return (
     <form onSubmit={buttonSubmit}>
       <h3>{titleForm}</h3>
-
+    <label>{formData.name && `Имя: ${formData.name}`}
       <input 
         type="text" 
         name="name" 
@@ -43,6 +43,9 @@ const buttonSubmit = (e) => {
         onChange={formChange}
         required
         />
+      </label>
+      <label>
+      {formData.lastName &&  `Фамилия: ${formData.lastName}`}
       <input 
         type="text" 
         name="lastName" 
@@ -51,7 +54,8 @@ const buttonSubmit = (e) => {
         onChange={formChange}
         required
         />
-
+</label>
+<label>{formData.phoneNumber && `Телефон: ${formData.phoneNumber}`}
       <input 
         type="number" 
         name="phoneNumber" 
@@ -59,7 +63,7 @@ const buttonSubmit = (e) => {
         value={formData.phoneNumber}
         onChange={formChange}
         />
-
+</label>
       <button>Отправить</button>
     </form>
   );

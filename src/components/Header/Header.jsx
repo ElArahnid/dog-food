@@ -10,9 +10,15 @@ import {
 import { useContext } from "react";
 import { ThemeContext } from "../../context/themeContext";
 import s from "./index.module.css";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
-function Header({ children, themeStatus, favor, activeAuthModal, setActiveAuthModal }) {
+function Header({
+  children,
+  themeStatus,
+  favor,
+  isOpenModalForm,
+  setIsOpenModalForm
+}) {
   // console.log(children);
   // console.log(user.email, user.name);
   // const handleClickButtonEdit = (e) => {
@@ -20,6 +26,9 @@ function Header({ children, themeStatus, favor, activeAuthModal, setActiveAuthMo
   //   onUpdateUser({name: "Эдуард Владимирович Богданов", about: "ученик учил уроки, у него в чернилах щеки"})
   // }
   const { toggleTheme } = useContext(ThemeContext);
+  const location = useLocation();
+
+  console.log(isOpenModalForm, ' <= isOpenModalForm');
 
   return (
     <header className={s.header}>
@@ -54,9 +63,14 @@ function Header({ children, themeStatus, favor, activeAuthModal, setActiveAuthMo
               {!themeStatus && <FontAwesomeIcon icon={faSun} />}
             </button>
             <NavLink
-              className={ activeAuthModal ? s.btnThemeActive : s.btnTheme }
+              className={isOpenModalForm ? s.btnThemeActive : s.btnTheme}
+              to="/login"
+              state={{ backLocation: location, firstPath: location.pathname, }}
             >
-              <FontAwesomeIcon icon={faUserLock} onClick={() => setActiveAuthModal(true)} />
+              <FontAwesomeIcon
+                icon={faUserLock}
+                onClick={ () => setIsOpenModalForm(true) }
+              />
             </NavLink>
           </div>
         </div>

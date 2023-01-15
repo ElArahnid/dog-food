@@ -6,7 +6,13 @@ import Footer from "../Footer/Footer";
 // import data from '../../assets/data.json';
 import "./styles.css";
 import SeachInfo from "../SearchInfo/SearchInfo";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { UserContext } from "../../context/userContext";
 import { CardContext } from "../../context/cardContext";
 import { ThemeContext, themes } from "../../context/themeContext";
@@ -22,6 +28,7 @@ import { FavorPage } from "../../pages/FavorPage/favor-page";
 import { FormLogin } from "../Form/FormLogin";
 import RegistrationForm from "../Form/RegistrationForm";
 import { Modal } from "../Modal/Modal";
+import { FormModal } from "../FormModal/FormModal";
 
 // function ContactList({contacts}) {
 //   // console.log(contacts);
@@ -49,7 +56,11 @@ function App() {
   const [contacts, setContacts] = useState([]);
   const [isOpenModalForm, setIsOpenModalForm] = useState(false);
 
-  let location = useLocation();
+  const location = useLocation();
+
+  const backLocation = location.state?.backLocation;
+  const firstPath = location.state?.firstPath;
+  console.log(firstPath, " <= firstPath");
 
   const debounceSearchQuery = useDebounce(searchQuery, 500);
   const navigate = useNavigate();
@@ -165,62 +176,129 @@ function App() {
   );
 
   document.querySelector("#root").className = theme.class;
-  document.querySelector("body").addEventListener("keyup", (e) => {if (e.key === 'Escape' || e.key === ' ') setIsOpenModalForm(false)});
+  document.querySelector("body").addEventListener("keyup", (e) => {
+    if (e.key === "Escape" || e.key === " ") setIsOpenModalForm(false);
+  });
 
   return (
-    <StrictMode>
-      <ThemeContext.Provider value={{ theme: themes.light, toggleTheme }}>
-        <UserContext.Provider value={{ user: currentUser, isLoading }}>
-          <CardContext.Provider
-            value={{
-              cards,
-              favor,
-              searchQuery,
-              checkedSearchInFavor,
-              location,
-              setSearchQuery,
-              handleLike: handleProductLike,
-            }}
-          >
-            <Modal active={isOpenModalForm} setActive={setIsOpenModalForm}>
+    <ThemeContext.Provider value={{ theme: themes.light, toggleTheme }}>
+      <UserContext.Provider value={{ user: currentUser, isLoading }}>
+        <CardContext.Provider
+          value={{
+            cards,
+            favor,
+            searchQuery,
+            checkedSearchInFavor,
+            location,
+            setSearchQuery,
+            handleLike: handleProductLike,
+          }}
+        >
+          {/* <Modal active={isOpenModalForm} setActive={setIsOpenModalForm}>
               <RegistrationForm />
-            </Modal>
-            {/* <Header user={currentUser} onUdateUser={handleUpdateUser}> */}
-            <Header
-              themeStatus={theme.status}
-              favor={favor}
-              setSearchQuery={setSearchQuery}
-              activeAuthModal={isOpenModalForm} setActiveAuthModal={setIsOpenModalForm}
-              
+            </Modal> */}
+          {/* <Header user={currentUser} onUpdateUser={handleUpdateUser}> */}
+          <Modal active={isOpenModalForm} setActive={setIsOpenModalForm}>
+            <FormModal />
+          </Modal>
+          <Header
+            themeStatus={theme.status}
+            favor={favor}
+            setSearchQuery={setSearchQuery}
+            isOpenModalForm={isOpenModalForm}
+            setIsOpenModalForm={setIsOpenModalForm}
+          >
+            <Logo className="logo logo_place_holder" href="/" />
+            <Search
+              onSubmit={handleFormSubmit}
+              onInput={handleInputChange}
+              setCheckedSearchInFavor={setCheckedSearchInFavor}
+            />
+          </Header>
+          {/* <FormLogin serializeCallBack={addContact} /> */}
+          {/* <ContactList contacts={contacts} /> */}
+          <main className="content container">
+            <SeachInfo searchText={searchQuery} />
+            <Routes
+              location={
+                (backLocation && { ...backLocation, pathname: firstPath }) ||
+                location
+              }
             >
-              <Logo className="logo logo_place_holder" href="/" />
-              <Search
-                onSubmit={handleFormSubmit}
-                onInput={handleInputChange}
-                setCheckedSearchInFavor={setCheckedSearchInFavor}
+              <Route index element={<CatalogPage />} />
+              <Route
+                path="/product/:idProduct"
+                element={<ProductPage isLoading={isLoading} />}
               />
-            </Header>
-            {/* <FormLogin serializeCallBack={addContact} /> */}
-            {/* <ContactList contacts={contacts} /> */}
-            <main className="content container">
-              <SeachInfo searchText={searchQuery} />
+              <Route path="/faq" element={<FaqPage />} />
+              <Route path="/favorites" element={<FavorPage />} />
+              <Route path="/form" element={<FormLogin />} />
+              <Route path="*" element={<NotFoundPage />} />
+              <Route
+                path="/login"
+                element={
+                  <>
+                    Авторизация
+                    <Link to="/register">Регистрация</Link>
+                  </>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <>
+                    Регистрация
+                    <Link to="/login">Войти</Link>
+                  </>
+                }
+              />
+            </Routes>
+
+            {backLocation && (
               <Routes>
-                <Route path="/" element={<CatalogPage />} />
                 <Route
-                  path="/product/:idProduct"
-                  element={<ProductPage isLoading={isLoading} />}
+                  path="/login"
+                  element={
+                    <Modal
+                      active={isOpenModalForm}
+                      setActive={setIsOpenModalForm}
+                    >
+                      Авторизация
+                      <Link
+                        to="/register"
+                        replace={true}
+                        state={{ backLocation: location, firstPath }}
+                      >
+                        Регистрация
+                      </Link>
+                    </Modal>
+                  }
                 />
-                <Route path="/faq" element={<FaqPage />} />
-                <Route path="/favorites" element={<FavorPage />} />
-                <Route path="/form" element={<FormLogin />} />
-                <Route path="*" element={<NotFoundPage />} />
+                <Route
+                  path="/register"
+                  element={
+                    <Modal
+                      active={isOpenModalForm}
+                      setActive={setIsOpenModalForm}
+                    >
+                      Регистрация
+                      <Link
+                        to="/login"
+                        replace={true}
+                        state={{ backLocation: location, firstPath }}
+                      >
+                        Войти
+                      </Link>
+                    </Modal>
+                  }
+                />
               </Routes>
-            </main>
-            <Footer />
-          </CardContext.Provider>
-        </UserContext.Provider>
-      </ThemeContext.Provider>
-    </StrictMode>
+            )}
+          </main>
+          <Footer />
+        </CardContext.Provider>
+      </UserContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 

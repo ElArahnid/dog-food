@@ -19,16 +19,13 @@ const CardList = () => {
       return (element.name).toLowerCase().includes(searchQuery.toLowerCase())
     }))
     : (selectedCards = cards);
-
+    
 
     // console.log(checkedSearchInFavor, ' <== checkedSearchInFavor');
   return (
     <>
-      {
-        isLoading && !selectedCards?.length && 
-          <NotFound title="...ничего" buttonAction={() => navigate(-1)} />
-        // <Spinner />
-      }
+      { isLoading && <Spinner /> }
+      { !selectedCards?.length && <NotFound title="...пока что ничего не найдено" buttonAction={() => navigate(-1)} /> }
       <div className="cards">
         {selectedCards.map((item) => (
           <Card key={item._id} {...item} />

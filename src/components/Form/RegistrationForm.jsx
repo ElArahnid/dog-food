@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { FormInput } from "../FormInput/FormInput";
 import "./style.module.css";
 
 function RegistrationForm() {
@@ -26,7 +27,7 @@ function RegistrationForm() {
 
       <label>
         <span>{errors?.name && errors.name.message}</span>
-        <input
+        <FormInput
           {...register("name", {
             required: "Имя обязательно",
             minLength: { value: 3, message: `Минимум 3 символа` },

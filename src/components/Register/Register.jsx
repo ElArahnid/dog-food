@@ -5,6 +5,7 @@ import { EMAIL_REGEXP, PASSWORD_REGEXP, VALIDATE_INPUTS_CONFIG } from "../../Uti
 import { useForm } from "react-hook-form";
 import { FormButton } from "../FormButton/FormButton";
 import { useNavigate } from "react-router-dom";
+import './style.module.css';
 
 export const Register = () => {
 

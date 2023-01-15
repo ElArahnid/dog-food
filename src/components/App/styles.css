@@ -49,3 +49,17 @@
   font-weight: 600;
   display: block;
 }
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  }
+
+  .infoText {
+    color: grey;
+  font-size: 14px;
+  }
+
+  .infoText::before, .errorMessage::before {
+    content: ' * ';
+  }

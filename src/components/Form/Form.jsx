@@ -15,7 +15,7 @@ export const Form = ({ title, handleFormSubmit, children}) => {
   return (
     <form onSubmit={handleFormSubmit}>
 
-      <h1 className={s.title}>{title}</h1>
+      <h1 className={s.headTitle}>{title}</h1>
       {children}
 
 

@@ -23,10 +23,23 @@
   .yellow {
     background: #FFE44D;
     border: none;
+    border-radius: 12px;
+    margin: 0 15px;
+    transition: .5s;
+  }
+
+  .yellow:hover, .white:hover {
+    transform: scale(1.05);
+    transition: .5s;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
   }
   
   .white {
     background: white;
     border: 0.5px solid #CFD8DC;
+    border-radius: 12px;
+    margin: 0 15px;
+    transition: .5s;
   }
   

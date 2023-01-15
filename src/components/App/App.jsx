@@ -29,6 +29,7 @@ import { FormLogin } from "../Form/FormLogin";
 import RegistrationForm from "../Form/RegistrationForm";
 import { Modal } from "../Modal/Modal";
 import { FormModal } from "../FormModal/FormModal";
+import { Register } from "../Register/Register";
 
 // function ContactList({contacts}) {
 //   // console.log(contacts);
@@ -60,7 +61,7 @@ function App() {
 
   const backLocation = location.state?.backLocation;
   const firstPath = location.state?.firstPath;
-  console.log(firstPath, " <= firstPath");
+  // console.log(firstPath, " <= firstPath");
 
   const debounceSearchQuery = useDebounce(searchQuery, 500);
   const navigate = useNavigate();
@@ -198,9 +199,9 @@ function App() {
               <RegistrationForm />
             </Modal> */}
           {/* <Header user={currentUser} onUpdateUser={handleUpdateUser}> */}
-          <Modal active={isOpenModalForm} setActive={setIsOpenModalForm}>
+          {/* <Modal active={isOpenModalForm} setActive={setIsOpenModalForm}>
             <FormModal />
-          </Modal>
+          </Modal> */}
           <Header
             themeStatus={theme.status}
             favor={favor}
@@ -246,10 +247,7 @@ function App() {
               <Route
                 path="/register"
                 element={
-                  <>
-                    Регистрация
-                    <Link to="/login">Войти</Link>
-                  </>
+                  <Register />
                 }
               />
             </Routes>
@@ -281,14 +279,7 @@ function App() {
                       active={isOpenModalForm}
                       setActive={setIsOpenModalForm}
                     >
-                      Регистрация
-                      <Link
-                        to="/login"
-                        replace={true}
-                        state={{ backLocation: location, firstPath }}
-                      >
-                        Войти
-                      </Link>
+                      <Register />
                     </Modal>
                   }
                 />

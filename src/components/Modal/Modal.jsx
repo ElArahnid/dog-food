@@ -10,7 +10,7 @@ export function Modal({ active, setActive, children }) {
 
   // const [active, setActive] = useState(false);
 
-  console.log(active, ' <= active');
+  // console.log(active, ' <= active');
   
   const navigate = useNavigate();
 

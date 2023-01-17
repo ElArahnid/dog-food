@@ -34,7 +34,7 @@ export function Modal({ active, setActive, children }) {
         onClick={(e) => e.stopPropagation()}
       >
         <FontAwesomeIcon
-          style={{ float: "right", cursor: "pointer" }}
+          style={{ float: "right", cursor: "pointer", alignSelf: 'end', }}
           icon={faXmark}
           onClick={onCloseModal}
         />

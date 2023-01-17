@@ -20,12 +20,15 @@
 }
 
 .modal_content {
-  padding: 20px;
+  padding: 20px 45px;
   border-radius: 10px;
   background-color: white;
   transform: scale(0.5);
   transition: 0.4s all;
   max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .modal_content.active {

@@ -5,16 +5,28 @@ import { ReactComponent as Save } from './img/save.svg';
 import truck from './img/truck.svg';
 import quality from './img/quality.svg';
 import { UserContext } from '../../context/userContext';
-import { useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { ContentHeader } from '../ContentHeader/ContentHeader';
 import { Rate } from '../Rate/Rate';
+import { ReviewForm } from '../ReviewForm/ReviewForm';
 
-export const Product = ({ onProductLike, description, discount, likes = [], name, pictures, price}) => {
-    // console.log('карточка товара');
+export const Product = ({ onProductLike, description, discount, likes = [], name, pictures, price, reviews, tags}) => {
+    console.log(reviews);
 
+    const middleRaitingCalc = useMemo(
+            () => 
+                Math.round(
+                    reviews?.reduce((acc, arg) => {
+                        return acc += arg.rating;
+                }, 0) / reviews?.length
+                ), [reviews]
+        )
+                // console.log(middleRaitingCalc);
+
+        
     const {user: currentUser} = useContext(UserContext);
 
-    const [rating, setRating] = useState(0);
+    // const [rating, setRating] = useState(null);
 
     const discount_price = calcDiscountPrice(price, discount);
     const isLike = isLiked(likes, currentUser?._id);
@@ -27,9 +39,10 @@ export const Product = ({ onProductLike, description, discount, likes = [], name
     return (
         <>
         <ContentHeader title={name} />
-        <div>
+        <div className={s.leftInfo}>
             <span>Артикул: 1234567890</span> 
-            <Rate rating={rating} setRating={setRating} isEditable />
+            <span><Rate rating={middleRaitingCalc} /></span>
+            <span>{reviews?.length} отзыв</span>
         </div>
         <div className={s.product}>
             <div className={s.imgWrapper}>
@@ -102,6 +115,7 @@ export const Product = ({ onProductLike, description, discount, likes = [], name
 					</div>
 				</div>
         </div>
+        <ReviewForm reviewTitle={`Отзыв о товаре ${name}`} productName={name} />
         </>
     )
 }

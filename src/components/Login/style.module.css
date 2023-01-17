@@ -1,0 +1,20 @@
+.errorMessage {
+    color: red;
+    font-size: 12px;
+    }
+  
+    .infoText, .link {
+    color: black;
+    font-size: 14px;
+    text-decoration: underline;
+    }
+  
+    .infoText::before, .errorMessage::before {
+      content: ' * ';
+    }
+
+    .link {
+    cursor: pointer;
+    margin-top: 0;
+    align-self: center;
+    }

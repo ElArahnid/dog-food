@@ -30,6 +30,8 @@ import RegistrationForm from "../Form/RegistrationForm";
 import { Modal } from "../Modal/Modal";
 import { FormModal } from "../FormModal/FormModal";
 import { Register } from "../Register/Register";
+import { Login } from "../Login/Login";
+import { ResetPassword } from "../ResetPassword/ResetPassword";
 
 // function ContactList({contacts}) {
 //   // console.log(contacts);
@@ -226,60 +228,37 @@ function App() {
                 location
               }
             >
-              <Route index element={<CatalogPage />} />
+              <Route index element={<CatalogPage /> } />
               <Route
                 path="/product/:idProduct"
-                element={<ProductPage isLoading={isLoading} />}
+                element={<ProductPage isLoading={isLoading} /> }
               />
-              <Route path="/faq" element={<FaqPage />} />
-              <Route path="/favorites" element={<FavorPage />} />
-              <Route path="/form" element={<FormLogin />} />
-              <Route path="*" element={<NotFoundPage />} />
-              <Route
-                path="/login"
-                element={
-                  <>
-                    Авторизация
-                    <Link to="/register">Регистрация</Link>
-                  </>
-                }
-              />
-              <Route
-                path="/register"
-                element={
-                  <Register />
-                }
-              />
+              <Route path="/faq" element={<FaqPage /> } />
+              <Route path="/favorites" element={<FavorPage /> } />
+              <Route path="/form" element={<FormLogin /> } />
+              <Route path="*" element={<NotFoundPage /> } />
+              <Route path="/login" element={ <Login /> } />
+              <Route path="/register" element={ <Register /> } />
+              <Route path="/reset-password" element={ <ResetPassword /> } />
             </Routes>
 
             {backLocation && (
               <Routes>
-                <Route
-                  path="/login"
-                  element={
-                    <Modal
-                      active={isOpenModalForm}
-                      setActive={setIsOpenModalForm}
-                    >
-                      Авторизация
-                      <Link
-                        to="/register"
-                        replace={true}
-                        state={{ backLocation: location, firstPath }}
-                      >
-                        Регистрация
-                      </Link>
+                <Route path="/login" element={
+                    <Modal active={isOpenModalForm} setActive={setIsOpenModalForm} >
+                      <Login />
                     </Modal>
                   }
                 />
-                <Route
-                  path="/register"
-                  element={
-                    <Modal
-                      active={isOpenModalForm}
-                      setActive={setIsOpenModalForm}
-                    >
+                <Route path="/register" element={
+                    <Modal active={isOpenModalForm} setActive={setIsOpenModalForm} >
                       <Register />
+                    </Modal>
+                  }
+                />
+                <Route path="/reset-password" element={
+                    <Modal active={isOpenModalForm} setActive={setIsOpenModalForm} >
+                      <ResetPassword />
                     </Modal>
                   }
                 />

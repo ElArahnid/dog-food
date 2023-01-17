@@ -181,6 +181,15 @@
   fill: #ff0000;
 }
 
+.leftInfo {
+display: flex;
+flex-direction: row;
+gap: 10px;
+justify-content: start;
+align-items: center;
+font-size: 90%;
+}
+
 @media (max-width: 1000px) {
   .product {
     gap: 20px;

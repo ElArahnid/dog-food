@@ -3,7 +3,7 @@ import { ReactComponent as SearchIcon } from "../../assets/images/ic-search.svg"
 import { ReactComponent as CloseIcon } from "../../assets/images/ic-close-input.svg";
 import s from "./styles.module.css";
 import cn from "classnames";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { CardContext } from "../../context/cardContext";
@@ -21,11 +21,13 @@ function Search({ onSubmit: propsOnSubmit, onInput, setCheckedSearchInFavor }) {
   };
 
   const inputDemoRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleFormOnSubmit = (e) => {
     e.preventDefault();
     propsOnSubmit(inputText);
-    setInputText("");
+    navigate(`/search=${inputText}`)
+    setInputText('');
   };
 
   const handlInputText = (e) => {
@@ -55,8 +57,6 @@ function Search({ onSubmit: propsOnSubmit, onInput, setCheckedSearchInFavor }) {
                   onChange={
                     () => {
                       setCheckedSearchInFavor(inputDemoRef.current.checked);
-                      // booleanTumbler ? setBooleanTumbler(false) : setBooleanTumbler(true);
-                      // console.log(booleanTumbler);
                     }
                     }
                 />
@@ -71,7 +71,7 @@ function Search({ onSubmit: propsOnSubmit, onInput, setCheckedSearchInFavor }) {
           onInput={handleInput}
           value={inputText}
         />
-        <button className={s.search__btn} type="button">
+        <button className={s.search__btn} onClick={handleFormOnSubmit} type="button">
           {inputText && (
             <CloseIcon
               onClick={handlInputText}
@@ -79,7 +79,7 @@ function Search({ onSubmit: propsOnSubmit, onInput, setCheckedSearchInFavor }) {
             />
           )}
           {inputText && (
-            <SearchIcon onClick={handleFormOnSubmit} className={s.search__icon} />
+            <SearchIcon className={s.search__icon} />
           )}
         </button>
       </form>

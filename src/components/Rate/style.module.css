@@ -20,6 +20,4 @@ cursor: pointer;
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: flex-start;
-    padding: 7px 0 0 15px;
 }

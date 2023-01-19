@@ -8,17 +8,22 @@ import { NotFound } from "../NotFound/NotFound";
 import "./styles.css";
 
 const CardList = () => {
-  const { cards, favor,  searchQuery = '', checkedSearchInFavor, location } = useContext(CardContext);
+  const { cards, favor, searchWord,  searchQuery = '', checkedSearchInFavor, location } = useContext(CardContext);
   const { isLoading } = useContext(UserContext);
   const navigate = useNavigate();
   
   let selectedCards;
 
-    location.pathname === "/favorites" && checkedSearchInFavor
-    ? (selectedCards = favor.filter((element) => {
+    if(location.pathname === "/favorites" && checkedSearchInFavor)
+     (selectedCards = favor.filter((element) => {
       return (element.name).toLowerCase().includes(searchQuery.toLowerCase())
     }))
-    : (selectedCards = cards);
+    else if (searchWord) {
+      selectedCards = cards.filter((element) => {
+        return (element.name).toLowerCase().includes(searchWord.toLowerCase())
+      })
+    }
+    else (selectedCards = cards);
     
 
     // console.log(checkedSearchInFavor, ' <== checkedSearchInFavor');

@@ -5,7 +5,6 @@ import "./index.css";
 const SeachInfo = ({ searchText }) => {
 
   const {cards, location} = useContext(CardContext);
-  // console.log(location.pathname);
   const searchCount = cards.length;
 
 // функция склонения по датам и прочему
@@ -24,7 +23,7 @@ const printNumerals = (number, titles) => {
   return `${titles[1]}`;
 };
 
-if ((searchCount !== 0) && (location.pathname !== '/favorites')) 
+if ((searchCount !== 0) && ((location.pathname !== '/favorites') && (!(location.pathname).includes('/product/')) )) 
   return (
     searchText && (
       <section className="search-title">

@@ -32,6 +32,7 @@ import { FormModal } from "../FormModal/FormModal";
 import { Register } from "../Register/Register";
 import { Login } from "../Login/Login";
 import { ResetPassword } from "../ResetPassword/ResetPassword";
+import ScrollToTop from "react-scroll-to-top";
 
 // function ContactList({contacts}) {
 //   // console.log(contacts);
@@ -69,11 +70,6 @@ function App() {
   const navigate = useNavigate();
 
   const handleRequest = useCallback(() => {
-    // const filterCards = cards.filter(
-    //   item => (item.name).toLowerCase().includes(searchQuery.toLowerCase())
-    // );
-    // setCards(filterCards);
-    // console.log(searchQuery.length);
     setIsLoading(true);
     api
       .search(debounceSearchQuery)
@@ -138,7 +134,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    handleRequest();
+    !location.pathname.includes('/product/') && handleRequest();
   }, [debounceSearchQuery, handleRequest]);
 
   const handleProductLike = useCallback(
@@ -211,7 +207,7 @@ function App() {
             isOpenModalForm={isOpenModalForm}
             setIsOpenModalForm={setIsOpenModalForm}
           >
-            <Logo className="logo logo_place_holder" href="/" />
+            <Logo className="logo logo_place_holder" href="/" onClick={() => setSearchQuery('')} />
             <Search
               onSubmit={handleFormSubmit}
               onInput={handleInputChange}
@@ -236,6 +232,7 @@ function App() {
               <Route path="/faq" element={<FaqPage /> } />
               <Route path="/favorites" element={<FavorPage /> } />
               <Route path="/form" element={<FormLogin /> } />
+              <Route path="/search=:searchWord"  element={<CatalogPage /> } />
               <Route path="*" element={<NotFoundPage /> } />
               <Route path="/login" element={ <Login /> } />
               <Route path="/register" element={ <Register /> } />
@@ -266,6 +263,7 @@ function App() {
             )}
           </main>
           <Footer />
+          <ScrollToTop smooth />
         </CardContext.Provider>
       </UserContext.Provider>
     </ThemeContext.Provider>

@@ -1,12 +1,7 @@
 import {
-    EMAIL_REGEXP,
-    PASSWORD_REGEXP,
     VALIDATE_INPUTS_CONFIG,
   } from "../../Utilites/constants.js";
-  import s from "./style.module.css";
-  import cn from "classnames";
   import { useForm } from "react-hook-form";
-  import { useLocation, useNavigate } from "react-router-dom";
   import { FormInput } from "../FormInput/FormInput.jsx";
   import { FormButton } from "../FormButton/FormButton.jsx";
   import { Form } from "../Form/Form.jsx";
@@ -14,11 +9,18 @@ import { useState } from "react";
 import { Rate } from "../Rate/Rate.jsx";
 import api from "../../Utilites/Api.js";
   
-  export const ReviewForm = ({reviewTitle = 'Отзыв о товаре', productName, productId, setProduct}) => {
+  export const ReviewForm = ({
+    reviewTitle = 'Отзыв о товаре', 
+    productName, 
+    productId, 
+    setProduct,
+    scrollToReviewsStart
+  }) => {
 
     const {
       register,
       handleSubmit,
+      setValue,
       formState: { errors },
     } = useForm({ mode: "onBlur" });
 
@@ -27,6 +29,8 @@ import api from "../../Utilites/Api.js";
     const sendReview = (data) => {
       api.postReviewProduct(productId, {...data, rating})
       .then(newReview => setProduct && setProduct(newReview))
+      .then(setValue("text", ""))
+      .then(scrollToReviewsStart())
     };
   
     const reviewText = register("text", {
@@ -35,6 +39,8 @@ import api from "../../Utilites/Api.js";
         message: VALIDATE_INPUTS_CONFIG.requiredArea,
       }
     });
+
+    // console.log(reviewText);
   
     return (
       <>

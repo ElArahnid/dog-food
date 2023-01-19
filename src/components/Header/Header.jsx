@@ -28,8 +28,6 @@ function Header({
   const { toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
 
-  // console.log(isOpenModalForm, ' <= isOpenModalForm');
-
   return (
     <header className={s.header}>
       <div className="container">

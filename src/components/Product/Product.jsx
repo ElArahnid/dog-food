@@ -7,12 +7,16 @@ import { calcDiscountPrice, isLiked } from "../../Utilites/product";
 import { ReactComponent as Save } from "./img/save.svg";
 import truck from "./img/truck.svg";
 import quality from "./img/quality.svg";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { ContentHeader } from "../ContentHeader/ContentHeader";
 import { Rate } from "../Rate/Rate";
 import { ReviewForm } from "../ReviewForm/ReviewForm";
 import { ProductDisplayNameWhoLiked } from "./ProductDisplayNameWhoLiked";
-import dayjs from "dayjs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import api from "../../Utilites/Api";
+import { ReviewsPagination } from "../ReviewsPagination/ReviewsPagination";
+import { REVIEWSPERPAGE } from "../../Utilites/constants";
 
 export const Product = ({
   onProductLike,
@@ -25,12 +29,15 @@ export const Product = ({
   reviews,
   tags,
   _id,
-  setProduct
+  setProduct,
 }) => {
   // console.log(reviews);
 
   const { user: currentUser } = useContext(UserContext);
-  const [pagesReview, setPagesReview] = useState(2)
+  const [pagesReview, setPagesReview] = useState(REVIEWSPERPAGE);
+  const reviewsStart = useRef(null);
+
+  const scrollToReviewsStart = () => reviewsStart.current.scrollIntoView();
 
   const middleRaitingCalc = useMemo(
     () =>
@@ -47,9 +54,16 @@ export const Product = ({
   const discount_price = calcDiscountPrice(price, discount);
   const isLike = isLiked(likes, currentUser?._id);
 
+  const deleteReview = (_id, reviewId) => {
+    api.deleteReviewById(_id, reviewId)
+    .then(newReview => setProduct && setProduct(newReview))
+    .catch(error => error)
+  }
+
   const createMarkup = (textToHtml) => {
     return { __html: textToHtml };
   };
+
   const descriptionHtml = createMarkup(description);
 
   return (
@@ -60,7 +74,12 @@ export const Product = ({
         <span>
           <Rate rating={middleRaitingCalc} />
         </span>
-        <span>{reviews?.length} отзыв</span>
+        <span
+          className={s.linkToReviews}
+          onClick={() => scrollToReviewsStart()}
+        >
+          {reviews?.length} отзыв
+        </span>
       </div>
       <div className={s.product}>
         <div className={s.imgWrapper}>
@@ -142,36 +161,50 @@ export const Product = ({
           </div>
         </div>
       </div>
-
-      <div className={s.reviewsArea}>
-        {reviews?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at) ).slice(0,pagesReview)?.map((element) => (
-          <div key={element._id} className={s.reviewsReview}>
-            <div className={s.headerReview}>
-              <div className={s.reviewsReviewAuthor}>
-                <ProductDisplayNameWhoLiked whoIsThis={element.author} />
-              </div>
-              <div className={s.reviewsReviewRating}>
-                <Rate rating={element.rating} />
-              </div>
-            </div>
-            <div className={s.reviewsReviewText}>{element.text}</div>
-            <div className={s.reviewsReviewCreated}>
-              Создано:{" "}
-              <DayJS format="DD MMMM YYYY" locale={ru}>
-                {element.created_at}
-              </DayJS>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className={s.reviewForm}>
+      <div className={s.reviewForm} ref={reviewsStart}>
         <ReviewForm
-        reviewTitle={`Отзыв о товаре ${name}`}
-        productName={name}
-        productId={_id}
-        setProduct={setProduct}
-      />
+          reviewTitle={`Отзыв о товаре ${name}`}
+          productName={name}
+          productId={_id}
+          setProduct={setProduct}
+          scrollToReviewsStart={scrollToReviewsStart}
+        />
       </div>
+      <div className={s.reviewsArea}>
+        {reviews
+          ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          .slice(0, pagesReview)
+          ?.map((element) => (
+            <div key={element._id} className={s.reviewsReview}>
+              <div className={s.headerReview}>
+                <div className={s.reviewsReviewAuthor}>
+                  <ProductDisplayNameWhoLiked whoIsThis={element.author} />
+                  {element.author === "636a510659b98b038f779cee" && (
+                    <span>
+                      <FontAwesomeIcon
+                        className={s.TrashCan}
+                        icon={faTrashCan}
+                        onClick = {() => deleteReview(_id, element._id)}
+                      />
+                    </span>
+                  )}
+                </div>
+                <div className={s.reviewsReviewRating}>
+                  <Rate rating={element.rating} />
+                </div>
+              </div>
+              <div className={s.reviewsReviewText}>{element.text}</div>
+              <div className={s.reviewsReviewCreated}>
+                Создано:{" "}
+                <DayJS format="DD MMMM YYYY" locale={ru}>
+                  {element.created_at}
+                </DayJS>
+              </div>
+            </div>
+          ))}
+          <ReviewsPagination reviews={reviews} />
+      </div>
+
     </>
   );
 };

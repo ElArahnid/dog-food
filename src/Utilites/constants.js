@@ -7,3 +7,5 @@ export const VALIDATE_INPUTS_CONFIG = {
     passwordValifate: 'Пароль должен быть больше, чем 7 символов и содержать латинские символы и цифры', 
 
 }
+
+export const REVIEWSPERPAGE = 7;

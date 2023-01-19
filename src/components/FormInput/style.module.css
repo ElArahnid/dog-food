@@ -22,6 +22,6 @@
   .textarea {
     height: auto;
     min-height: 100px;
-    resize: none;
+    resize: vertical;
   }
   

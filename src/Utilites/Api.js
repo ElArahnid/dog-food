@@ -35,6 +35,12 @@ class Api {
     }).then(onResponce)
   }
 
+  getUserInfoById(userId) {
+    return fetch(`${this._baseUrl}/v2/group-7/users/${userId}`, {
+      headers: this._headers
+    }).then(onResponce)
+  }
+
   setUserInfo(dataUser) {
     return fetch(`${this._baseUrl}/v2/group-7/users/me`, {
       method: "PATCH",
@@ -43,13 +49,13 @@ class Api {
     }).then(onResponce)
   }
 
-  // setUserInfo(dataUser) {
-  //   return fetch(`${this._baseUrl}/v2/group-7/users/me`, {
-  //     method: 'PATCH',
-  //     headers: this._headers,
-  //     body: JSON.stringify(dataUser)
-  //   }).then(onResponce)
-  // }
+  postReviewProduct(productId, reviewData) {
+    return fetch(`${this._baseUrl}/products/review/${productId}`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify(reviewData)
+    }).then(onResponce)
+  }
 
   search(searchQuery) {
     return fetch(`${this._baseUrl}/products/search?query=${searchQuery}`, {

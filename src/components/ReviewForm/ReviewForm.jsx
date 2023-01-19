@@ -12,8 +12,9 @@ import {
   import { Form } from "../Form/Form.jsx";
 import { useState } from "react";
 import { Rate } from "../Rate/Rate.jsx";
+import api from "../../Utilites/Api.js";
   
-  export const ReviewForm = ({reviewTitle = 'Отзыв о товаре', productName}) => {
+  export const ReviewForm = ({reviewTitle = 'Отзыв о товаре', productName, productId, setProduct}) => {
 
     const {
       register,
@@ -21,10 +22,11 @@ import { Rate } from "../Rate/Rate.jsx";
       formState: { errors },
     } = useForm({ mode: "onBlur" });
 
-    const [rating, setRating] = useState(null); 
+    const [rating, setRating] = useState(5); 
 
     const sendReview = (data) => {
-      console.log({...data, rating});
+      api.postReviewProduct(productId, {...data, rating})
+      .then(newReview => setProduct && setProduct(newReview))
     };
   
     const reviewText = register("text", {
@@ -46,7 +48,7 @@ import { Rate } from "../Rate/Rate.jsx";
           <FormInput
             {...reviewText}
             id="review"
-            type="text"
+            typeinput="textarea"
             placeholder={`Скажите, что вы думаете о товаре "${productName}"`}
           />
         <FormButton type="submit" color="yellow">Отправить отзыв</FormButton>

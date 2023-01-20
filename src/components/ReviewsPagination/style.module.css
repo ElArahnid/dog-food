@@ -1,0 +1,26 @@
+.numberPageArea {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.numberPageSelected {
+    font-size: 80%;
+    background-color: rgba(128, 128, 128, 0.2);
+    padding: 3px 7px;
+    border-radius: 12px;
+    cursor: none;
+}
+
+.numberPage a {
+ text-decoration: none;
+ transition: .5s;
+ color: black
+}
+
+.numberPage a:hover {
+    text-decoration: underline;
+    font-weight: 700;
+   }

@@ -17,6 +17,7 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import api from "../../Utilites/Api";
 import { ReviewsPagination } from "../ReviewsPagination/ReviewsPagination";
 import { REVIEWSPERPAGE } from "../../Utilites/constants";
+import { useParams } from "react-router-dom";
 
 export const Product = ({
   onProductLike,
@@ -31,11 +32,11 @@ export const Product = ({
   _id,
   setProduct,
 }) => {
-  // console.log(reviews);
 
   const { user: currentUser } = useContext(UserContext);
-  const [pagesReview, setPagesReview] = useState(REVIEWSPERPAGE);
+  const [pagesReview, setPagesReview] = useState({start: 0, end: REVIEWSPERPAGE});
   const reviewsStart = useRef(null);
+  console.log(pagesReview);
 
   const scrollToReviewsStart = () => reviewsStart.current.scrollIntoView();
 
@@ -173,7 +174,7 @@ export const Product = ({
       <div className={s.reviewsArea}>
         {reviews
           ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .slice(0, pagesReview)
+          .slice(pagesReview.start, pagesReview.end)
           ?.map((element) => (
             <div key={element._id} className={s.reviewsReview}>
               <div className={s.headerReview}>
@@ -196,13 +197,13 @@ export const Product = ({
               <div className={s.reviewsReviewText}>{element.text}</div>
               <div className={s.reviewsReviewCreated}>
                 Создано:{" "}
-                <DayJS format="DD MMMM YYYY" locale={ru}>
+                <DayJS locale={ru} format='DD MMMM YYYY' >
                   {element.created_at}
                 </DayJS>
               </div>
             </div>
           ))}
-          <ReviewsPagination reviews={reviews} />
+          <ReviewsPagination reviews={reviews} productId={_id} setPagesReview={setPagesReview} scrollToReviewsStart={scrollToReviewsStart} />
       </div>
 
     </>

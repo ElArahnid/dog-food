@@ -7,7 +7,7 @@ import Footer from "../Footer/Footer";
 import "./styles.css";
 import SeachInfo from "../SearchInfo/SearchInfo";
 import {
-  Link,
+  // Link,
   Route,
   Routes,
   useLocation,
@@ -26,9 +26,9 @@ import { NotFoundPage } from "../../pages/NotFoundPage/not-found";
 import { FaqPage } from "../../pages/FAQPage/faq-page";
 import { FavorPage } from "../../pages/FavorPage/favor-page";
 import { FormLogin } from "../Form/FormLogin";
-import RegistrationForm from "../Form/RegistrationForm";
+// import RegistrationForm from "../Form/RegistrationForm";
 import { Modal } from "../Modal/Modal";
-import { FormModal } from "../FormModal/FormModal";
+// import { FormModal } from "../FormModal/FormModal";
 import { Register } from "../Register/Register";
 import { Login } from "../Login/Login";
 import { ResetPassword } from "../ResetPassword/ResetPassword";
@@ -228,7 +228,12 @@ function App() {
               <Route
                 path="/product/:idProduct"
                 element={<ProductPage isLoading={isLoading} /> }
-              />
+              >
+                <Route 
+                  path="review-page/:reviewPage"
+                  element={<ProductPage isLoading={isLoading} /> }
+                />
+              </Route>              
               <Route path="/faq" element={<FaqPage /> } />
               <Route path="/favorites" element={<FavorPage /> } />
               <Route path="/form" element={<FormLogin /> } />

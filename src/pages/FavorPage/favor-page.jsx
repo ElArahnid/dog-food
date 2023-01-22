@@ -8,12 +8,12 @@ export const FavorPage = () => {
   const { favor, checkedSearchInFavor } = useContext(CardContext);
   // console.log(checkedSearchInFavor);
   return (
-    <>
+    <div className="container">
     <ContentHeader title={checkedSearchInFavor ? 'Ваше избранное' : 'Весь каталог'} />
       <Sort />
       <div className="content__cards">
         <CardList cards={favor} />
       </div>
-    </>
+    </div>
   );
 };

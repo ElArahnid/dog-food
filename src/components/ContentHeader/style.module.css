@@ -13,7 +13,21 @@
   color: black;
   cursor: pointer;
   float: right;
+  background-color: #ffe44d;
+  padding: 3px 7px;
+  margin: 0 7px;
+  border-radius: 7px;
+  text-decoration: none;
 }
-.buttonBack:hover {
-  font-weight: 600;
+
+.buttonBack::after {
+  content: ' < ';
+}
+
+.buttonBack:hover::before {
+  content: ' < ';
+}
+
+.buttonBack:hover::after {
+  content: ' << ';
 }

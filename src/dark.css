@@ -1,0 +1,49 @@
+.indexTopBannerDark {
+    background-color: #ffffff2e !important;
+    color: #FFE44D;
+}
+
+.productDescDark {
+	background-color: #424040;
+	transition: 0.5s;
+}
+
+.productReviewDark {
+	background-color: #9c919128;
+	transition: 0.5s;
+}
+
+.productReviewText {
+    background-color: black !important;
+}
+
+.productReviewDark span {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.spanFavText {
+color: white;
+}
+
+.paginationArea {
+    background-color: #424040;
+    padding: 7px;
+    border-radius: 7px;
+}
+
+.paginationAreaHref {
+color: white !important;
+}
+
+.paginationAreaHref:hover {
+    color: #ffe44d !important;
+    }
+
+ .accordion {
+    background-color: #424040;
+    border-radius: 7px;
+}
+
+.accordion p {
+    color: rgba(255, 255, 255, 0.8);
+}

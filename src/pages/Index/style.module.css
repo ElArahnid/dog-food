@@ -1,0 +1,9 @@
+.BannersOnIndex {
+    margin: auto;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    top: -160px;
+  }

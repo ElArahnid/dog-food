@@ -7,7 +7,7 @@ import Spinner from "../Spinner"
 import { NotFound } from "../NotFound/NotFound";
 import "./styles.css";
 
-const CardList = () => {
+const CardList = ({  setSearchQuery }) => {
   const { cards, favor, searchWord,  searchQuery = '', checkedSearchInFavor, location } = useContext(CardContext);
   const { isLoading } = useContext(UserContext);
   const navigate = useNavigate();
@@ -30,8 +30,10 @@ const CardList = () => {
   return (
     <>
       { isLoading && <Spinner /> }
-      { !selectedCards?.length && <NotFound title="...пока что ничего не найдено" buttonAction={() => navigate(-1)} /> }
-      <div className="cards">
+      { (!selectedCards.length && !isLoading) &&
+        <NotFound title="...пока что ничего не найдено" setSearchQuery={setSearchQuery} buttonAction={() => {navigate(-1);}} 
+      /> }
+      <div className="cards  container">
         {selectedCards.map((item) => (
           <Card key={item._id} {...item} />
         ))}

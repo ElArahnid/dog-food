@@ -1,4 +1,5 @@
 import { Accordion } from "../../components/Accordeon/Accordion"
+import { ContentHeader } from "../../components/ContentHeader/ContentHeader"
 
 const dataFAQ = [
 	{
@@ -45,8 +46,9 @@ const dataFAQ = [
 
 export const FaqPage = () => {
     return (
-        <>
-            <h1>Часто спрашивают</h1>
+		<>
+        <div className="container">
+		<ContentHeader title="Часто спрашивают" />
             {
                 dataFAQ.map((data, index) => 
                     <Accordion key={index} title={data.title}>
@@ -54,6 +56,7 @@ export const FaqPage = () => {
                     </Accordion>
                 )
             }
-        </>
+        </div>
+		</>
     )
 }

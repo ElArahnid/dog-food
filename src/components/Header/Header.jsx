@@ -24,10 +24,9 @@ function Header({
   // const handleClickButtonEdit = (e) => {
   //   e.preventDefault();
   //   onUpdateUser({name: "Эдуард Владимирович Богданов", about: "ученик учил уроки, у него в чернилах щеки"})
-  // }
+
   const { toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
-
   return (
     <header className={s.header}>
       <div className="container">
@@ -38,12 +37,14 @@ function Header({
           {children}
           <div className={s.faArea}>
             <NavLink
-              to="/faq"
-              className={({ isActive }) =>
-                isActive ? s.btnThemeActive : s.btnTheme
-              }
+              className={isOpenModalForm ? s.btnThemeActive : s.btnTheme}
+              to="/login"
+              state={{ backLocation: location, firstPath: location.pathname, }}
             >
-              <FontAwesomeIcon icon={faFileCircleQuestion} />
+              <FontAwesomeIcon
+                icon={faUserLock}
+                onClick={ () => setIsOpenModalForm(true) }
+              />
             </NavLink>
             <NavLink
               to="/favorites"
@@ -56,20 +57,18 @@ function Header({
                 <span className={s.iconBubble}>{favor.length}</span>
               ) : null}
             </NavLink>
+            <NavLink
+              to="/faq"
+              className={({ isActive }) =>
+                isActive ? s.btnThemeActive : s.btnTheme
+              }
+            >
+              <FontAwesomeIcon icon={faFileCircleQuestion} />
+            </NavLink>
             <button className={s.btnTheme} onClick={toggleTheme}>
               {themeStatus && <FontAwesomeIcon icon={faMoon} />}
               {!themeStatus && <FontAwesomeIcon icon={faSun} />}
             </button>
-            <NavLink
-              className={isOpenModalForm ? s.btnThemeActive : s.btnTheme}
-              to="/login"
-              state={{ backLocation: location, firstPath: location.pathname, }}
-            >
-              <FontAwesomeIcon
-                icon={faUserLock}
-                onClick={ () => setIsOpenModalForm(true) }
-              />
-            </NavLink>
           </div>
         </div>
       </div>

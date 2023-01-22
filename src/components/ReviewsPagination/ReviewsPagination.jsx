@@ -2,6 +2,8 @@ import s from "./style.module.css";
 import cn from "classnames";
 import { Link, useParams } from "react-router-dom";
 import { REVIEWSPERPAGE } from "../../Utilites/constants";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/themeContext";
 
 export const ReviewsPagination = ({
   reviews,
@@ -9,6 +11,8 @@ export const ReviewsPagination = ({
   setPagesReview,
   scrollToReviewsStart,
 }) => {
+  const {themeStatus} = useContext(ThemeContext);
+
   const sumPages = Math.round(reviews?.length / REVIEWSPERPAGE) || 1;
   let numberPage = 1;
   const pages = new Array(sumPages).fill(<></>);
@@ -16,13 +20,13 @@ export const ReviewsPagination = ({
   const {reviewPage} = useParams();
 
   return (
-    <div className={s.numberPageArea}>
-      <span className={s.numberPage}>Страницы:</span>{" "}
+    <div className={cn(s.numberPageArea, {'paginationArea': !themeStatus})}>
+      <span className={s.numberPage} >Страницы:</span>{" "}
       {pages.map((page, i) => (
-        <span className={cn(s.numberPage, {[s.numberPageSelected]: (+reviewPage === i)})}>
+        <span key={i} className={cn(s.numberPage, {[s.numberPageSelected]: ( +reviewPage === i )})}>
            <Link
+           className={cn({'paginationAreaHref': !themeStatus})}
             to={`/product/${productId}/review-page/${i}`}
-            key={i}
             onClick={() => {
               setPagesReview({
                 start: REVIEWSPERPAGE * i - REVIEWSPERPAGE < 0 ? 0 : REVIEWSPERPAGE * i,

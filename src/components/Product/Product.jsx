@@ -1,23 +1,27 @@
 import React, { UserContext } from "../../context/userContext";
-import DayJS from "react-dayjs";
-import ru from "dayjs/locale/ru";
+import { useContext, useMemo, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import dayjs from "dayjs";
+
 import s from "./index.module.css";
+import '../../../src/dark.css'
 import cn from "classnames";
-import { calcDiscountPrice, isLiked } from "../../Utilites/product";
+
+import api from "../../Utilites/Api";
+import { REVIEWSPERPAGE } from "../../Utilites/constants";
+
 import { ReactComponent as Save } from "./img/save.svg";
 import truck from "./img/truck.svg";
 import quality from "./img/quality.svg";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+
+import { calcDiscountPrice, isLiked } from "../../Utilites/product";
 import { ContentHeader } from "../ContentHeader/ContentHeader";
 import { Rate } from "../Rate/Rate";
 import { ReviewForm } from "../ReviewForm/ReviewForm";
 import { ProductDisplayNameWhoLiked } from "./ProductDisplayNameWhoLiked";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import api from "../../Utilites/Api";
 import { ReviewsPagination } from "../ReviewsPagination/ReviewsPagination";
-import { REVIEWSPERPAGE } from "../../Utilites/constants";
-import { useParams } from "react-router-dom";
+import { ThemeContext } from "../../context/themeContext";
 
 export const Product = ({
   onProductLike,
@@ -34,9 +38,9 @@ export const Product = ({
 }) => {
 
   const { user: currentUser } = useContext(UserContext);
+  const {themeStatus} = useContext(ThemeContext);
   const [pagesReview, setPagesReview] = useState({start: 0, end: REVIEWSPERPAGE});
   const reviewsStart = useRef(null);
-  console.log(pagesReview);
 
   const scrollToReviewsStart = () => reviewsStart.current.scrollIntoView();
 
@@ -86,7 +90,7 @@ export const Product = ({
         <div className={s.imgWrapper}>
           <img src={pictures} alt={`Изображение ${name}`} />
         </div>
-        <div className={s.desc}>
+        <div className={cn(s.desc, {'productDescDark': !themeStatus})}>
           <span className={discount ? s.oldPrice : s.price}>
             {price}&nbsp;₽
           </span>
@@ -110,7 +114,7 @@ export const Product = ({
             onClick={onProductLike}
           >
             <Save />
-            <span>{isLike ? "В избранном" : "В избранное"}</span>
+            <span className={cn({'spanFavText': !themeStatus})}>{isLike ? "В избранном" : "В избранное"}</span>
           </button>
           <div className={s.delivery}>
             <img src={truck} alt="truck" />
@@ -134,7 +138,7 @@ export const Product = ({
           </div>
         </div>
       </div>
-      <div className={s.box}>
+      <div className={cn(s.box, {'productDescDark': !themeStatus})}>
         <h2 className={s.title}>Описание</h2>
         <p className={s.subtitle} dangerouslySetInnerHTML={descriptionHtml}></p>
         <h2 className={s.title}>Характеристики</h2>
@@ -162,7 +166,7 @@ export const Product = ({
           </div>
         </div>
       </div>
-      <div className={s.reviewForm} ref={reviewsStart}>
+      <div className={cn(s.reviewForm, {'productDescDark': !themeStatus})} ref={reviewsStart}>
         <ReviewForm
           reviewTitle={`Отзыв о товаре ${name}`}
           productName={name}
@@ -176,7 +180,7 @@ export const Product = ({
           ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           .slice(pagesReview.start, pagesReview.end)
           ?.map((element) => (
-            <div key={element._id} className={s.reviewsReview}>
+            <div key={element._id} className={cn(s.reviewsReview, {'productReviewDark': !themeStatus})}>
               <div className={s.headerReview}>
                 <div className={s.reviewsReviewAuthor}>
                   <ProductDisplayNameWhoLiked whoIsThis={element.author} />
@@ -194,12 +198,9 @@ export const Product = ({
                   <Rate rating={element.rating} />
                 </div>
               </div>
-              <div className={s.reviewsReviewText}>{element.text}</div>
+              <div className={cn(s.reviewsReviewText, {'productReviewText': !themeStatus})}>{element.text}</div>
               <div className={s.reviewsReviewCreated}>
-                Создано:{" "}
-                <DayJS locale={ru} format='DD MMMM YYYY' >
-                  {element.created_at}
-                </DayJS>
+                <span>Создано: {dayjs(element?.created_at).locale('ru').format('DD MMMM YYYY, H:m:s') }</span>
               </div>
             </div>
           ))}

@@ -6,6 +6,17 @@
     gap: 10px;
 }
 
+
+.numberPage a {
+    text-decoration: none;
+    transition: .5s;
+    color: black
+}
+
+.numberPage a:hover {
+    font-weight: 700;
+   }
+
 .numberPageSelected {
     font-size: 80%;
     background-color: rgba(128, 128, 128, 0.2);
@@ -14,13 +25,6 @@
     cursor: none;
 }
 
-.numberPage a {
- text-decoration: none;
- transition: .5s;
- color: black
+.numberPageSelected a {
+    cursor: none;
 }
-
-.numberPage a:hover {
-    text-decoration: underline;
-    font-weight: 700;
-   }

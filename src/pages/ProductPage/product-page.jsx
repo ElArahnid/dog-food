@@ -37,7 +37,7 @@ const ProductPage = () => {
 
   return (
     <>
-      <div className="content__cards">
+      <div className="content__cards container">
         {catchError ? (
           <NotFoundPage />
         ) : isLoading ? (

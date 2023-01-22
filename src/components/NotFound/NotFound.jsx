@@ -1,10 +1,10 @@
-import React from "react";
 // import notFound from './img/ic-notfound.svg';
 import { Link } from 'react-router-dom';
 import notFound from '../../pages/NotFoundPage/dino-t-rex-runner.svg';
 import s from './styles.module.css';
+
 export const NotFound = ( {children, title, buttonText = "Назад", buttonAction} ) => {
-	
+
 	return (
 		<>
 			<div className={s.notFound}>

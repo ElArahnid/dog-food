@@ -40,7 +40,7 @@ useEffect(() => {
 
     return (
         <div className={s.rate}>
-            Рейтинг: {ratingArr.map((star, index) => <span key={index}>{star}</span>)}
+            <span>Рейтинг: </span>{ratingArr.map((star, index) => <span key={index}>{star}</span>)}
         </div>
     )
 }

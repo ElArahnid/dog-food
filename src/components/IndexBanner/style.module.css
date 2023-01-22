@@ -1,0 +1,44 @@
+.banner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 12px 12px 27px;
+  border-radius: 20px;
+  color: #ffffff;
+  background-position: bottom right;
+  background-size: contain;
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 2.61em;
+  font-weight: 900;
+  color: currentColor;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 28px;
+  color: currentColor;
+  margin: 5px;
+}
+
+.price {
+  font-size: 28px;
+  color: currentColor;
+}
+
+.banner_middle {
+  font-size: 12px;
+  width: 50%;
+  height: 180px;
+}
+
+.banner_big {
+  width: 100%;
+  font-size: 14px;
+  height: 200px;
+}

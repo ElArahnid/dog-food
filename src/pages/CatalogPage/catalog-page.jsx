@@ -1,9 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import CardList from "../../components/CardList/CardList";
 import Sort from "../../components/Sort/Sort";
 import { CardContext } from "../../context/cardContext";
-import { UserContext } from "../../context/userContext";
 
 const tabs = [
   {
@@ -24,9 +22,6 @@ export const CatalogPage = () => {
 
 	const { cards } = useContext(CardContext);
 	const [sortedCard, setSortedCard] = useState(cards);
-  const { searchWord } = useParams();
-
-// console.log(searchWord);
 
 	useEffect(() => {
 	setSortedCard();
@@ -51,8 +46,8 @@ export const CatalogPage = () => {
         tabs={tabs}
         selectTypeSort={selectTypeSort}
       /> : null}
-      <div className="content__cards">
-        <CardList cards={sortedCard} searchWord={searchWord} />
+      <div className="content__cards container">
+        <CardList cards={sortedCard} />
       </div>
     </>
   );

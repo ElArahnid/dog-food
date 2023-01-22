@@ -1,11 +1,13 @@
-	@import "~normalize.css";
+@import "~normalize.css";
 
 * {
 	box-sizing: inherit;
 }
+
 html {
 	box-sizing: border-box;
 }
+
 body {
 	font-family: "Nunito", "Arial", "Helvetica", sans-serif;
 }
@@ -36,7 +38,7 @@ body {
 	max-width: 1024px;
 	padding-left: 16px;
 	padding-right: 16px;
-	width: 95%;
+	width: 100%;
 	margin: 0 auto;
 }
 
@@ -45,7 +47,7 @@ img {
 }
 
 .content {
-	padding: 20px 0;
+	padding: 0 0 20px 0;
 	flex: 1;
 }
 
